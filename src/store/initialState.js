@@ -1,12 +1,14 @@
 const initialState = {
   department: {
     isLoading: false,
+    error: {},
     data: []
   },
 
   category: {
     inDepartment: {
       isLoading: false,
+      error: {},
       data: []
     }
   },
@@ -14,6 +16,7 @@ const initialState = {
   shoppingCart: {
     isLoading: false,
     data: [],
+    error: {},
     count: 0,
     totalAmount: 0
   }

@@ -1,10 +1,22 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
+import axios from 'axios';
 import './styles/index.css';
+import configureStore from './store/configureStore';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
-ReactDOM.render(<App />, document.getElementById('root'));
+const store = configureStore();
+
+axios.defaults.withCredentials = true; // sets the cookies from backend
+
+const Main = () => (
+  <Provider store={store}>
+    <App />
+  </Provider>
+)
+ReactDOM.render(<Main />, document.getElementById('root'));
 
 if (module.hot) {
   module.hot.accept();
