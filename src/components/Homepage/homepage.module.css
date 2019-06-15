@@ -10,3 +10,24 @@
 .title {
   color: white;
 }
+
+.bottom {
+  background-image: url("https://res.cloudinary.com/dbeloved/image/upload/v1560350093/images/chris-barbalis-1400972-unsplash.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  min-height: 400px;
+  color: white;
+}
+
+.filter {
+  margin-top: 20px;
+  padding-left: 150px;
+}
+
+.customPanelStyle {
+  background: #f7f7f7;
+  border-Radius: 4;
+  margin-Bottom: 24;
+  border: 0;
+  overflow: 'hidden';
+};

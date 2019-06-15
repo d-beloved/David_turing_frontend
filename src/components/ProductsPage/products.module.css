@@ -1,0 +1,12 @@
+.head {
+  background-image: url("https://res.cloudinary.com/dbeloved/image/upload/v1560354138/images/S2E_YRe.jpg.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  min-height: 400px;
+  color: white;
+  margin-bottom:50px;
+}
+
+.title {
+  color: white;
+}

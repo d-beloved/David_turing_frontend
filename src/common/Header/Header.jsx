@@ -61,6 +61,7 @@ class Header extends  Component {
             </Form>
             <i className={cx('fas fa-shopping-bag', Styles.shopcart)} />
             <span className={cx(Styles.badge, Styles.lblCartCount, 'badge-danger')}> 5 </span>
+            <a href="/signin">Sign in</a>
           </Navbar.Collapse>
         </Navbar>
       </Container>
