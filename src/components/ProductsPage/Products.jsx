@@ -1,9 +1,12 @@
 import React, { Component, Fragment } from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import { Jumbotron, Container, Row } from 'react-bootstrap';
 import cx from 'classnames';
 import { Breadcrumb, Pagination } from 'antd';
 import Styles from './products.module.css';
 import ProductCard from '../../common/productCard/ProductCard';
+import { getAllProducts } from '../../actions/productAction';
 
 class ProductsPage extends Component {
   constructor(props) {

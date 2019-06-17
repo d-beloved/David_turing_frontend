@@ -24,9 +24,11 @@ class ProductCard extends Component {
         )}
       >
         <Meta title="Name of product" description="price" />
-        <div className={Styles.middle}>
-          <div className={Styles.text}>View Details</div>
-        </div>
+        <a href="/catalog/product">
+          <div className={Styles.middle}>
+            <div className={Styles.text}>View Details</div>
+          </div>
+        </a>
       </Card>
     );
   }

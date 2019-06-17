@@ -19,6 +19,13 @@ const initialState = {
     error: {},
     count: 0,
     totalAmount: 0
+  },
+
+  product: {
+    isLoading: false,
+    data: [],
+    error: {},
+    count: 0
   }
 }
 

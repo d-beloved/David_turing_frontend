@@ -1,7 +1,22 @@
+.header {
+  color: #F62F5E;
+  font-weight: bold;
+  font-size: 30px;
+  padding-left: 150px;
+}
+
+.navigation{
+  font-weight: bold;
+  font-size: 17px;
+  vertical-align: text-bottom;
+  color: #2E2E2E;
+  padding-left: 100px;
+}
+
 .shopcart {
   font-size: 30px
 }
-#lblCartCount {
+.lblCartCount {
   font-size: 12px;
   background: #ff0000;
   color: #fff;
@@ -12,7 +27,11 @@
 .badge {
 padding-left: 9px;
 padding-right: 9px;
--webkit-border-radius: 9px;
--moz-border-radius: 9px;
-border-radius: 9px;
+-webkit-border-radius: 50px;
+-moz-border-radius: 50px;
+border-radius: 50px;
+}
+
+.bag{
+  text-decoration: none;
 }

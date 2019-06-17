@@ -5,16 +5,14 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
 import {
-  Container,
   Navbar,
   Nav,
-  NavDropdown,
   Form,
   FormControl,
   Button
 } from 'react-bootstrap';
-import { getAllDepartments } from '../../actions/departmentAction';
 import Styles from './header.module.css';
+import { getAllDepartments } from '../../actions/departmentAction';
 
 
 class Header extends  Component {
@@ -27,44 +25,37 @@ class Header extends  Component {
   render() {
     const { department } = this.props;
     return (
-      <Container>
-        <Navbar bg="light" expand="lg">
-          <Navbar.Brand href="#home">SHOPMATE</Navbar.Brand>
-          <Navbar.Toggle aria-controls="basic-navbar-nav" />
-          <Navbar.Collapse id="basic-navbar-nav">
-            <Nav className="mr-auto">
-              {department && department.map(items => (
-                (
-                  <NavDropdown title={items.name} id="basic-nav-dropdown" key={items.department_id}>
-                    <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-                    <NavDropdown.Item href="#action/3.2">
-                    Another action
-                    </NavDropdown.Item>
-                    <NavDropdown.Item href="#action/3.3">
-                    Something
-                    </NavDropdown.Item>
-                    <NavDropdown.Divider />
-                    <NavDropdown.Item href="#action/3.4">
-                    Separated link
-                    </NavDropdown.Item>
-                  </NavDropdown>
-                )
-              ))}
-            </Nav>
-            <Form inline>
-              <FormControl
-                type="text"
-                placeholder="Search"
-                className="mr-sm-2"
-              />
-              <Button variant="outline-success">Search</Button>
-            </Form>
+      <Navbar bg="light" expand="lg">
+        <Navbar.Brand href="/" className={Styles.header}>SHOPMATE</Navbar.Brand>
+        <Navbar.Toggle aria-controls="basic-navbar-nav" />
+        <Navbar.Collapse id="basic-navbar-nav">
+          <Nav variant="pill" className={cx(Styles.navigation, "mr-auto")}>
+            {department && department.map(items => (
+              (
+                <Nav.Item key={items.department_id}>
+                  <Nav.Link id="basic-nav-dropdown">{items.name}</Nav.Link>
+                </Nav.Item>
+              )
+            ))}
+          </Nav>
+          <Form inline>
+            <FormControl
+              type="text"
+              placeholder="Search"
+              className="mr-sm-2"
+            />
+            <Button variant="outline-success">Search</Button>
+          </Form>
+          <a
+            href="/cart"
+            className={Styles.bag}
+          >
             <i className={cx('fas fa-shopping-bag', Styles.shopcart)} />
-            <span className={cx(Styles.badge, Styles.lblCartCount, 'badge-danger')}> 5 </span>
-            <a href="/signin">Sign in</a>
-          </Navbar.Collapse>
-        </Navbar>
-      </Container>
+          </a>
+          <span className={cx(Styles.badge, Styles.lblCartCount, 'badge-danger')}> 5 </span>
+          <a href="/signin" className={Styles.bag}>Sign in</a>
+        </Navbar.Collapse>
+      </Navbar>
     );
   }
 }
@@ -75,7 +66,7 @@ Header.propTypes = {
 }
 
 const mapStateToProps = state => ({
-  data: state.department
+  department: state.department.data
 });
 
 const mapDispatchToProps = dispatch => ({

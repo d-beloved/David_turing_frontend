@@ -1,5 +1,4 @@
 import React from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import Header from './common/Header/Header';
 import Footer from './common/Footer/Footer';
@@ -8,6 +7,8 @@ import Homepage from './components/Homepage/Homepage';
 import ProductPage from './components/ProductsPage/Products';
 import Signin from './components/Auth/Signin';
 import Signup from './components/Auth/SIgnup';
+import ProductDetails from './components/ProductDetails/ProductDetails';
+import ShoppingCart from './components/ShoppingCart/ShoppingCart';
 
 const App = () => {
   return (
@@ -16,9 +17,11 @@ const App = () => {
         <Header />
         <Switch>
           <Route exact path='/' component={Homepage} />
-          <Route exact path='/products' component={ProductPage} />
+          <Route exact path='/catalog' component={ProductPage} />
           <Route exact path='/signin' component={Signin} />
           <Route exact path='/signup' component={Signup} />
+          <Route exact path='/catalog/product' component={ProductDetails} />
+          <Route exact path='/cart' component={ShoppingCart} />
         </Switch>
         <Footer />
       </div>

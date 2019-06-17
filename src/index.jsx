@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import axios from 'axios';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import './styles/index.css';
 import configureStore from './store/configureStore';
 import App from './App';

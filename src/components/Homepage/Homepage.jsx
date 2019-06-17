@@ -25,13 +25,14 @@ class Homepage extends Component {
               information.
             </p>
             <p>
-              <Button href="/products" variant="primary">Go Shopping</Button>
+              <Button href="/catalog" variant="primary">Go Shopping</Button>
             </p>
           </Container>
         </Jumbotron>
         <Row>
           <Col md="4" className={Styles.filter}>
             <Collapse
+              defaultActiveKey={['1', '2']}
               bordered={false}
               expandIcon={({ isActive }) => <Icon type="caret-right" rotate={isActive ? 90 : 0} />}
             >
