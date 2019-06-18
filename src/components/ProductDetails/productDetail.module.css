@@ -109,33 +109,6 @@ img {
     background: #b36800;
     color: #fff; }
 
-.white {
-  background: white; }
-
-.black {
-  background: black; }
-
-.red {
-  background: red; }
-
-.orange {
-  background: orange; }
-
-.yellow {
-  background: yellow; }
-
-.green {
-  background: green; }
-
-.blue {
-  background: #0076ad; }
-
-.indigo {
-  background: indigo; }
-
-.purple {
-  background: purple; }
-
 .tooltip-inner {
   padding: 1.3em; }
 
@@ -207,10 +180,10 @@ img {
 }
 
 .minus:hover{
-  background-color: orange !important;
+  background-color: grey !important;
 }
 .plus:hover{
-  background-color: orange !important;
+  background-color: grey !important;
 }
 /*Prevent text selection*/
 span{

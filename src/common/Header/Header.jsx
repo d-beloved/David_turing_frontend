@@ -30,7 +30,7 @@ class Header extends  Component {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav variant="pill" className={cx(Styles.navigation, "mr-auto")}>
-            {department && department.map(items => (
+            {department.length > 0 && department.map(items => (
               (
                 <Nav.Item key={items.department_id}>
                   <Nav.Link id="basic-nav-dropdown">{items.name}</Nav.Link>

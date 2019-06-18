@@ -1,9 +1,16 @@
+/* eslint-disable react/require-default-props */
+/* eslint-disable react/forbid-prop-types */
 import React, { Component, Fragment } from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import { Jumbotron, Container, Button, Col, Row } from 'react-bootstrap';
 import cx from 'classnames';
 import { Collapse, Icon } from 'antd';
 import Styles from './homepage.module.css';
 import ProductCard from '../../common/productCard/ProductCard';
+import { getAllProducts } from '../../actions/productAction';
+import { getAllCategories } from '../../actions/categoryAction'
+import { getAllDepartments } from '../../actions/departmentAction'
 
 const Panel = Collapse.Panel;
 
@@ -13,7 +20,25 @@ class Homepage extends Component {
     this.state = {};
   }
 
+  componentDidMount = () => {
+    const {
+      fetchProducts,
+      fetchCategory,
+      fetchDepartment
+    } = this.props;
+    fetchProducts(1, 6);
+    fetchDepartment();
+    return fetchCategory();
+  }
+
   render() {
+    const { products, categories, departments } = this.props;
+    // const featuredProducts = products.slice(8, 15);
+    // for (let i = 0; i < 6; i++) {
+    //   console.log('holla', feat);
+    //   const product = products[(Math.floor(Math.random()*10) + 1)];
+    //   featuredProducts.push(product);
+    // }
     return (
       <Fragment>
         <Jumbotron fluid className={cx(Styles.head)}>
@@ -38,29 +63,37 @@ class Homepage extends Component {
             >
               <div>FILTER</div>
               <Panel header="Departments" key="1" className={Styles.customPanelStyle}>
-                <p>Department 1</p>
-                <p>Department 2</p>
-                <p>Department 3</p>
+                { departments && departments.map(department => {
+                  const { department_id, name } = department;
+                  return (
+                    <p key={department_id}>{name}</p>
+                  )
+                })}
               </Panel>
               <Panel header="Categories" key="2" className={Styles.customPanelStyle}>
-                <p>Category 1</p>
-                <p>Category 2</p>
-                <p>Category 3</p>
-                <p>Category 4</p>
-                <p>Category 5</p>
-                <p>Category 6</p>
-                <p>Category 7</p>
+                { categories && categories.map(category => {
+                  const { name, category_id } = category;
+                  return (
+                    <p key={category_id}>{name}</p>
+                  );
+                })}
               </Panel>
             </Collapse>
           </Col>
           <Col md="8">
             <Row>
-              <ProductCard />
-              <ProductCard />
-              <ProductCard />
-              <ProductCard />
-              <ProductCard />
-              <ProductCard />
+              { products && products.map(product => {
+                const {product_id, thumbnail, name, price } = product;
+                return (
+                  <ProductCard
+                    key={product_id}
+                    product_id={product_id}
+                    thumbnail={thumbnail}
+                    name={name}
+                    price={price}
+                  />
+                );
+              })}
             </Row>
           </Col>
         </Row>
@@ -82,4 +115,25 @@ class Homepage extends Component {
   }
 }
 
-export default Homepage;
+Homepage.propTypes = {
+  fetchProducts: PropTypes.func,
+  products: PropTypes.array,
+  categories: PropTypes.array,
+  departments: PropTypes.array,
+  fetchCategory: PropTypes.func,
+  fetchDepartment: PropTypes.func
+}
+
+const mapStateToProps = state => ({
+  products: state.products.data.rows,
+  categories: state.category.data.rows,
+  departments: state.department.data
+});
+
+const mapDispatchToProps = dispatch => ({
+  fetchProducts: (page, limit) => dispatch(getAllProducts(page, limit)),
+  fetchCategory: () => dispatch(getAllCategories()),
+  fetchDepartment: () => dispatch(getAllDepartments())
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Homepage);

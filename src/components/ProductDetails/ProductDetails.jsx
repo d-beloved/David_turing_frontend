@@ -1,16 +1,93 @@
+/* eslint-disable react/no-unused-state */
+/* eslint-disable react/require-default-props */
+/* eslint-disable react/forbid-prop-types */
 import React, { Component, Fragment } from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import cx from 'classnames';
 import { Container, Row } from 'react-bootstrap';
 import Styles from './productDetail.module.css';
 import ProductCard from '../../common/productCard/ProductCard';
+import { getAllProducts, getOneProduct } from '../../actions/productAction';
+import { getProductAttribute } from '../../actions/attributeAction';
+
+const API = process.env.REACT_APP_IMAGE_BASE_URL;
 
 class ProductDetails extends Component {
   constructor(props) {
     super(props)
-    this.state = {};
+    this.state = {
+      color: 'Select color',
+      size: 'Select size',
+      quantity: 1,
+      product_id: null
+    };
   }
 
+  componentDidMount = () => {
+    const {
+      fetchProductDetail,
+      fetchProductAttributes,
+      fetchProducts,
+      match
+    } = this.props;
+    const id = match.params.product_id;
+    this.setState({
+      product_id: id
+    })
+    fetchProductDetail(id);
+    fetchProductAttributes(id);
+    return fetchProducts(1, 4);
+  }
+
+  componentDidUpdate(prevProps) {
+    const { fetchProductDetail, match, fetchProductAttributes } = this.props;
+    if (prevProps.match.params.product_id !== match.params.product_id) {
+      fetchProductAttributes(match.params.product_id);
+      return fetchProductDetail(match.params.product_id);
+    }
+  }
+
+  handleColor = (event) => {
+    event.preventDefault();
+    this.setState({
+      color: event.target.name
+    });
+  }
+
+  handleSize = (event) => {
+    event.preventDefault();
+    this.setState({
+      size: event.target.value
+    });
+  }
+
+  handleDecreaseQuantity = (event) => {
+    event.preventDefault();
+    const { quantity } = this.state;
+    const newState = quantity - 1;
+    this.setState({
+      quantity: newState
+    });
+  }
+
+  handleIncreaseQuantity = (event) => {
+    event.preventDefault();
+    const { quantity } = this.state;
+    const newState = quantity + 1;
+    this.setState({
+      quantity: newState
+    });
+  }
+
+
   render () {
+    const { products, productDetail, attributes } = this.props;
+    const { image, name, price, description } = productDetail;
+    const { size, color, quantity } = this.state;
+
+    const productImage = `${API}/`+image;
+
     return (
       <Fragment>
         <div className='container'>
@@ -19,41 +96,87 @@ class ProductDetails extends Component {
               <div className={cx(Styles.wrapper, "row")}>
                 <div className={cx(Styles.preview, "col-md-6")}>
                   <div className={cx(Styles['preview-pic'], Styles['tab-content'])}>
-                    <img alt="preview" src="https://res.cloudinary.com/dbeloved/image/upload/v1556393299/product_images/wreath.gif" />
+                    <img alt="preview" src={productImage} />
                   </div>
                 </div>
                 <div className={cx(Styles.details, "col-md-6")}>
-                  <h3 className={Styles["product-title"]}>Name of the Product</h3>
+                  <h3 className={Styles["product-title"]}>{name}</h3>
                   <h4 className={Styles.price}>
                     {' '}
-                    <span>$180</span>
+                    <span>
+                      $
+                      {price}
+                    </span>
                   </h4>
-                  <p className={Styles["product-description"]}>Product description, can be anything you want as long as it is within the jurisdiction of power.</p>
+                  <p className={Styles["product-description"]}>{description}</p>
                   <h5 className={Styles.colors}>
-                    <p className={Styles['small-header']}>Colors</p>
-                    <span className={cx(Styles.color, Styles.white)} />
-                    <span className={cx(Styles.color, Styles.black)} />
-                    <span className={cx(Styles.color, Styles.red)} />
-                    <span className={cx(Styles.color, Styles.orange)} />
-                    <span className={cx(Styles.color, Styles.yellow)} />
-                    <span className={cx(Styles.color, Styles.green)} />
-                    <span className={cx(Styles.color, Styles.blue)} />
-                    <span className={cx(Styles.color, Styles.indigo)} />
-                    <span className={cx(Styles.color, Styles.purple)} />
+                    <p className={Styles['small-header']}>{color}</p>
+                    { attributes && attributes.map(attribute => {
+                      const { attribute_value_id, attribute_value, attribute_name } = attribute;
+                      if (attribute_name === 'Color') {
+                        return (
+                          <span key={attribute_value_id}>
+                            <input
+                              className={Styles.color}
+                              style={{ backgroundColor: attribute_value }}
+                              type='button'
+                              onClick={this.handleColor}
+                              name={attribute_value}
+                            />
+                            {' '}
+                          </span>
+                        );
+                      }
+                      return null;
+                    })}
                   </h5>
                   <h5 className={Styles.sizes}>
-                    <p className={Styles['small-header']}>Sizes</p>
-                    <span className={Styles.size} data-toggle="tooltip" title="small">S</span>
-                    <span className={Styles.size} data-toggle="tooltip" title="medium">M</span>
-                    <span className={Styles.size} data-toggle="tooltip" title="large">L</span>
-                    <span className={Styles.size} data-toggle="tooltip" title="xtra large">XL</span>
-                    <span className={Styles.size} data-toggle="tooltip" title="xtra xtra large">XXL</span>
+                    <p className={Styles['small-header']}>{size}</p>
+                    { attributes && attributes.map(attribute => {
+                      const { attribute_value_id, attribute_value, attribute_name } = attribute;
+                      if (attribute_name === 'Size') {
+                        return (
+                          <span key={attribute_value_id}>
+                            <input
+                              className={Styles.size}
+                              type='button'
+                              data-toggle="tooltip"
+                              onClick={this.handleSize}
+                              title={attribute_value}
+                              value={attribute_value}
+                            />
+                            {' '}
+                          </span>
+                        );
+                      }
+                      return null;
+                    })}
                   </h5>
                   <p className={Styles['small-header']}>Quantity</p>
                   <div className={Styles.qty}>
-                    <span className={Styles.minus}>-</span>
-                    <input type="number" className={cx(Styles.count, Styles.input)} name="qty" value="1" />
-                    <span className={Styles.plus}>+</span>
+                    <span>
+                      <input
+                        className={Styles.minus}
+                        type="button"
+                        onClick={this.handleDecreaseQuantity}
+                        value="-"
+                        disabled={
+                          quantity === 1
+                        }
+                      />
+                    </span>
+                    <input type="button" className={cx(Styles.count, Styles.input)} name="qty" value={quantity} />
+                    <span>
+                      <input
+                        className={Styles.plus}
+                        type="button"
+                        onClick={this.handleIncreaseQuantity}
+                        value="+"
+                        disabled={
+                          quantity === 10
+                        }
+                      />
+                    </span>
                   </div>
                   <div className="action">
                     <button className={cx(Styles["add-to-cart"], "btn btn-default")} type="button">Add to cart</button>
@@ -66,10 +189,18 @@ class ProductDetails extends Component {
         <Container>
           <div className={Styles.others}>You may also like</div>
           <Row>
-            <ProductCard />
-            <ProductCard />
-            <ProductCard />
-            <ProductCard />
+            { products && products.map(product => {
+              const {product_id, thumbnail, name, price } = product;
+              return (
+                <ProductCard
+                  key={product_id}
+                  product_id={product_id}
+                  thumbnail={thumbnail}
+                  name={name}
+                  price={price}
+                />
+              );
+            })}
           </Row>
         </Container>
       </Fragment>
@@ -77,4 +208,31 @@ class ProductDetails extends Component {
   }
 }
 
-export default ProductDetails;
+ProductDetails.propTypes = {
+  fetchProducts: PropTypes.func.isRequired,
+  products: PropTypes.array.isRequired,
+  fetchProductDetail: PropTypes.func.isRequired,
+  product_id: PropTypes.number.isRequired,
+  productDetail: PropTypes.object.isRequired,
+  fetchProductAttributes: PropTypes.func.isRequired,
+  attributes: PropTypes.array.isRequired,
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      product_id: PropTypes.string
+    })
+  }),
+}
+
+const mapStateToProps = state => ({
+  products: state.products.data.rows,
+  productDetail: state.oneProduct.data,
+  attributes: state.attributes.data
+})
+
+const mapDispatchToProps = dispatch => ({
+  fetchProducts: (page, limit) => dispatch(getAllProducts(page, limit)),
+  fetchProductDetail: (product_id) => dispatch(getOneProduct(product_id)),
+  fetchProductAttributes: (product_id) => dispatch(getProductAttribute(product_id))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(ProductDetails);

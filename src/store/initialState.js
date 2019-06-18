@@ -22,10 +22,23 @@ const initialState = {
   },
 
   product: {
+    allProduct: {
+      isLoading: false,
+      data: [],
+      error: {},
+      count: 0
+    },
+    oneProduct: {
+      isLoading: false,
+      data: {},
+      error: {}
+    }
+  },
+
+  attributes: {
     isLoading: false,
     data: [],
     error: {},
-    count: 0
   }
 }
 

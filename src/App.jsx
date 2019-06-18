@@ -20,7 +20,7 @@ const App = () => {
           <Route exact path='/catalog' component={ProductPage} />
           <Route exact path='/signin' component={Signin} />
           <Route exact path='/signup' component={Signup} />
-          <Route exact path='/catalog/product' component={ProductDetails} />
+          <Route exact path="/catalog/product/:product_id" component={ProductDetails} />
           <Route exact path='/cart' component={ShoppingCart} />
         </Switch>
         <Footer />

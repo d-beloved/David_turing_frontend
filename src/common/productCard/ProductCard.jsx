@@ -1,16 +1,17 @@
-import React, { Component } from 'react';
+/* eslint-disable react/prop-types */
+import React from 'react';
+import { Link } from 'react-router-dom';
 import { Card } from 'antd';
 import Styles from './product.module.css';
 
+const API = process.env.REACT_APP_IMAGE_BASE_URL;
+
 const { Meta } = Card;
 
-class ProductCard extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {}
-  }
-
-  render() {
+const ProductCard = (props) => {
+  const { thumbnail, price, name, product_id } = props;
+  const image = `${API}/`+thumbnail;
+  const pricing = "$"+price;
     return (
       <Card
         className={Styles.Card}
@@ -18,20 +19,19 @@ class ProductCard extends Component {
         style={{ width: 240 }}
         cover={(
           <img
-            alt="example"
-            src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png"
+            alt={name}
+            src={image}
           />
         )}
       >
-        <Meta title="Name of product" description="price" />
-        <a href="/catalog/product">
+        <Meta title={name} description={pricing} />
+        <Link to={`/catalog/product/${product_id}`}>
           <div className={Styles.middle}>
             <div className={Styles.text}>View Details</div>
           </div>
-        </a>
+        </Link>
       </Card>
     );
-  }
 }
 
 export default ProductCard;
