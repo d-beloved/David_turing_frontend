@@ -5,11 +5,15 @@ import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
+import cookieParse from 'cookie-parse';
 import { Container, Row } from 'react-bootstrap';
 import Styles from './productDetail.module.css';
 import ProductCard from '../../common/productCard/ProductCard';
 import { getAllProducts, getOneProduct } from '../../actions/productAction';
 import { getProductAttribute } from '../../actions/attributeAction';
+import { addProductToCart } from '../../actions/shoppingCartAction';
+import * as types from '../../actions/actionTypes';
+import ShowMessage from '../../utils/showMessage';
 
 const API = process.env.REACT_APP_IMAGE_BASE_URL;
 
@@ -20,6 +24,7 @@ class ProductDetails extends Component {
       color: 'Select color',
       size: 'Select size',
       quantity: 1,
+      showSuccessMessage: false,
       product_id: null
     };
   }
@@ -80,17 +85,47 @@ class ProductDetails extends Component {
     });
   }
 
+  handleAddToCart = async (event) => {
+    const {
+      color, size, quantity, product_id
+    } = this.state;
+    const { addToCart } = this.props;
+    const { cartId } = cookieParse.parse(document.cookie);
+    const attributes = `${size},${color}`;
+    const itemData = { product_id, quantity, cartId, attributes };
+    event.preventDefault();
+    const status = await addToCart(itemData);
+      if (status.type === types.ADD_TO_CART_SUCCESS) {
+        this.setState({
+          quantity: 1,
+          size: 'Select size',
+          color: 'Select color',
+          showSuccessMessage: true,
+        });
+      }
+  };
+
+  closeMessage = () => {
+    this.setState({
+      showSuccessMessage: false,
+    });
+  }
 
   render () {
     const { products, productDetail, attributes } = this.props;
     const { image, name, price, description } = productDetail;
-    const { size, color, quantity } = this.state;
-
+    const { size, color, quantity, showSuccessMessage } = this.state;
     const productImage = `${API}/`+image;
 
     return (
       <Fragment>
         <div className='container'>
+          { showSuccessMessage ? (
+            <ShowMessage
+              openMessage={showSuccessMessage}
+              onClose={this.closeMessage}
+            />
+          ) : null }
           <div className={Styles.card}>
             <div className="container-fluid">
               <div className={cx(Styles.wrapper, "row")}>
@@ -179,7 +214,19 @@ class ProductDetails extends Component {
                     </span>
                   </div>
                   <div className="action">
-                    <button className={cx(Styles["add-to-cart"], "btn btn-default")} type="button">Add to cart</button>
+                    <button
+                      className={cx(Styles["add-to-cart"], "btn btn-default")}
+                      type="button"
+                      onClick={this.handleAddToCart}
+                      disabled={
+                        color === null
+                        || color === 'Select color'
+                        || size === null
+                        || size === 'Select size'
+                      }
+                    >
+                    Add to cart
+                    </button>
                   </div>
                 </div>
               </div>
@@ -221,6 +268,7 @@ ProductDetails.propTypes = {
       product_id: PropTypes.string
     })
   }),
+  addToCart: PropTypes.func.isRequired,
 }
 
 const mapStateToProps = state => ({
@@ -232,7 +280,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   fetchProducts: (page, limit) => dispatch(getAllProducts(page, limit)),
   fetchProductDetail: (product_id) => dispatch(getOneProduct(product_id)),
-  fetchProductAttributes: (product_id) => dispatch(getProductAttribute(product_id))
+  fetchProductAttributes: (product_id) => dispatch(getProductAttribute(product_id)),
+  addToCart: (itemData) => dispatch(addProductToCart(itemData)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProductDetails);

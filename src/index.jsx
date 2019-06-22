@@ -5,12 +5,27 @@ import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './styles/index.css';
 import configureStore from './store/configureStore';
+import isLoggedIn from './utils/isLoggedIn';
+import { setLoggedInUser, logout } from './actions/authAction';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
+
+// global axios defaults
+const { token } = localStorage;
+// eslint-disable-next-line dot-notation
+axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+axios.defaults.withCredentials = true;
+global.axios = axios;
+
 const store = configureStore();
 
-axios.defaults.withCredentials = true; // sets the cookies from backend
+if (isLoggedIn()) {
+  store.dispatch(setLoggedInUser());
+} else {
+  store.dispatch(logout());
+}
+
 
 const Main = () => (
   <Provider store={store}>

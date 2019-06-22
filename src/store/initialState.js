@@ -1,3 +1,5 @@
+import isLoggedIn from '../utils/isLoggedIn';
+
 const initialState = {
   department: {
     isLoading: false,
@@ -14,11 +16,31 @@ const initialState = {
   },
 
   shoppingCart: {
-    isLoading: false,
-    data: [],
-    error: {},
-    count: 0,
-    totalAmount: 0
+    cartProducts: {
+      isLoading: false,
+      data: [],
+      error: {}
+    },
+    addToCart: {
+      isLoading: false,
+      data: [],
+      error: {}
+    },
+    updateCart: {
+      isLoading: false,
+      data: [],
+      error: {}
+    },
+    deleteItem: {
+      isLoading: false,
+      data: null,
+      error: {}
+    },
+    emptyCart: {
+      isLoading: false,
+      data: [],
+      error: {}
+    }
   },
 
   product: {
@@ -39,6 +61,13 @@ const initialState = {
     isLoading: false,
     data: [],
     error: {},
+  },
+
+  auth: {
+    isAuthenticated: isLoggedIn(),
+    isLoading: false,
+    user: {},
+    error: ''
   }
 }
 
