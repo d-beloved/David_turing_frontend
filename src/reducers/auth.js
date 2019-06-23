@@ -38,7 +38,7 @@ const authReducer = (
         isAuthenticated: false,
         user: {},
       };
-    case types.UPDATE_SHIPPING_ADDRESS_SUCCESS:
+    case types.UPDATE_CUSTOMER_ADDRESS_SUCCESS:
       return {
         ...state,
         user: action.payload,

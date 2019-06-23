@@ -40,15 +40,22 @@ export const signupUser = (signupDetails) => (dispatch) => {
     .then(response => {
       if (response.status === 200) {
         dispatch(signupRequest(false));
-        localStorage.setItem('token', response.data.accessToken);
+        localStorage.setItem('token', response.data.accessToken.split(' ')[1]);
         axios.defaults.headers.common['Authorization'] = `Bearer ${
-          response.accessToken
+          response.data.accessToken.split(' ')[1]
         }`;
         return dispatch(signupSuccess(response.data.customer))
       }
-      return dispatch(signupError(response.error.message));
     })
-    .catch(dispatch(signupError('Unable to sign up at the moment')))
+    .catch(error => {
+      dispatch(signupRequest(false));
+      if (error.response) {
+        if (error.response.status === 400) {
+          return dispatch(signupError(error.response.data.error.message))
+        }
+      }
+      return dispatch(signupError('Unable to sign up at the moment'));
+    })
 };
 
 export const signinUser = (signinDetails) => (dispatch) => {
@@ -56,18 +63,24 @@ export const signinUser = (signinDetails) => (dispatch) => {
   return axios
     .post(`${config.apiUrl}/customers/login`, signinDetails)
     .then(response => {
-      console.log('error', response)
       if (response.status === 200) {
         dispatch(signinRequest(false));
-        localStorage.setItem('token', response.data.accessToken);
+        localStorage.setItem('token', response.data.accessToken.split(' ')[1]);
         axios.defaults.headers.common['Authorization'] = `Bearer ${
-          response.accessToken
+          response.data.accessToken.split(' ')[1]
         }`;
         return dispatch(signinSuccess(response.data.customer))
       }
-      return dispatch(signinError(response.data.error.message));
     })
-    .catch(error => dispatch(signinError(console.log('error', error))))
+    .catch(error => {
+      dispatch(signinRequest(false));
+      if (error.response) {
+        if (error.response.status === 400) {
+          return dispatch(signinError(error.response.data.error.message))
+        }
+      }
+      return dispatch(signinError('Unable to sign in at the moment'));
+    })
 };
 
 export const logout = () => {

@@ -8,36 +8,60 @@ import { Form, Icon, Input, Button } from 'antd';
 import Styles from './auth.module.css';
 import { signinUser, signupUser } from '../../actions/authAction';
 
+
+// function validatePassword(value) {
+//   if (value) {
+//     return {
+//       validateStatus: 'success',
+//       errorMsg: null,
+//     };
+//   }
+//   return {
+//     validateStatus: 'error',
+//     errorMsg: 'Please input your Password!',
+//   };
+// }
+
+// function validateName(value) {
+//   if (value.length < 5 || value.length > 50) {
+//     return {
+//       validateStatus: 'error',
+//       errorMsg: 'Name should be more than 5 characters!'
+//     }
+//   }
+//   return {
+//     validateStatus: 'success',
+//     errorMsg: null
+//   }
+// }
+
 class Auth extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      name: '',
-      email: '',
-      password: ''
+      name: "",
+      email: "",
+      password: ""
     };
   }
 
   handleInputChange = event => {
-    console.log('I got here', event.target.value)
     this.setState({
-      [event.target.id]: event.target.value,
+      [event.target.id]: event.target.value
     });
   };
-
 
   handleSubmit = event => {
     event.preventDefault();
     const { handleLogin, handleSignup, match } = this.props;
     const { name, email, password } = this.state;
     const signupDetails = { name, email, password };
-    console.log('details', signupDetails);
     const signinDetails = { email, password };
-    const isRegisterPage = match.path === '/signup';
+    const isRegisterPage = match.path === "/signup";
     if (isRegisterPage) {
-      return handleSignup(signupDetails)
+      return handleSignup(signupDetails);
     }
-    return handleLogin(signinDetails)
+    return handleLogin(signinDetails);
   };
 
   // rules: [{ required: true, min: 5, max: 50, message: 'Name should be more than 5 characters!' }],
@@ -50,29 +74,27 @@ class Auth extends Component {
   render() {
     const { name, email, password } = this.state;
     const { isAuthenticated, match, error } = this.props;
-    const isRegisterPage = match.path === '/signup';
-    const promptMessage = isRegisterPage ? 'Already a user' : 'Not a user';
-    const promptAction = isRegisterPage ? 'Sign in' : 'Sign up';
-    const promptPath = isRegisterPage ? '/signin' : '/signup';
+    const isRegisterPage = match.path === "/signup";
+    const promptMessage = isRegisterPage ? "Already a user" : "Not a user";
+    const promptAction = isRegisterPage ? "Sign in" : "Sign up";
+    const promptPath = isRegisterPage ? "/signin" : "/signup";
 
     if (isAuthenticated) {
-      return <Redirect to="" noThrow />;
+      return <Redirect to="" />;
     }
 
     return (
       <Form onSubmit={this.handleSubmit} className={Styles.login_form}>
-        <div>
-          {isRegisterPage ? 'Sign Up' : 'Sign In'}
-        </div>
+        <div>{isRegisterPage ? "Sign Up" : "Sign In"}</div>
         {isRegisterPage ? (
           <Form.Item>
             <Input
               onChange={this.handleInputChange}
-              prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
+              prefix={<Icon type="user" style={{ color: "rgba(0,0,0,.25)" }} />}
               type="name"
               placeholder="Name"
               value={name}
-              name='name'
+              name="name"
               id="name"
             />
           </Form.Item>
@@ -80,9 +102,9 @@ class Auth extends Component {
         <Form.Item>
           <Input
             onChange={this.handleInputChange}
-            prefix={<Icon type="mail" style={{ color: 'rgba(0,0,0,.25)' }} />}
+            prefix={<Icon type="mail" style={{ color: "rgba(0,0,0,.25)" }} />}
             type="email"
-            name='email'
+            name="email"
             placeholder="Email"
             value={email}
             id="email"
@@ -93,27 +115,33 @@ class Auth extends Component {
         <Form.Item>
           <Input
             onChange={this.handleInputChange}
-            prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
+            prefix={<Icon type="lock" style={{ color: "rgba(0,0,0,.25)" }} />}
             type="password"
-            name='password'
+            name="password"
             id="password"
             value={password}
             placeholder="Password"
           />
         </Form.Item>
         {error && (
-          <div error id=''>
+          <div error id="">
             {error}
           </div>
         )}
         <Form.Item>
-          <Button type="primary" htmlType="submit" className={Styles.login_form_button}>
-            {isRegisterPage ? 'Sign up' : 'Sign in'}
+          <Button
+            type="primary"
+            htmlType="submit"
+            className={Styles.login_form_button}
+          >
+            {isRegisterPage ? "Sign up" : "Sign in"}
           </Button>
           {promptMessage}
           <Link to={promptPath}>
             {' '}
-            {promptAction}
+            {
+              promptAction
+            }
           </Link>
         </Form.Item>
       </Form>
@@ -126,12 +154,13 @@ Auth.propTypes = {
   isAuthenticated: PropTypes.bool,
   match: PropTypes.object,
   handleLogin: PropTypes.func,
-  handleSignup: PropTypes.func
+  handleSignup: PropTypes.func,
+  error: PropTypes.string
 };
 
 const mapStateToProps = state => ({
   isAuthenticated: state.auth.isAuthenticated,
-  loading: state.auth.loading,
+  loading: state.auth.isLoading,
   user: state.auth.user,
   error: state.auth.error
 });

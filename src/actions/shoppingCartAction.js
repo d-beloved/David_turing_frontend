@@ -76,6 +76,21 @@ const emptyCartError = payload => ({
   payload
 });
 
+const updateCustomerRequest = payload => ({
+  type: types.UPDATE_CUSTOMER_ADDRESS,
+  payload
+});
+
+const updateCustomerSuccess = payload => ({
+  type: types.UPDATE_CUSTOMER_ADDRESS_SUCCESS,
+  payload
+});
+
+const updateAddressError = payload => ({
+  type: types.UPDATE_CUSTOMER_ADDRESS_ERROR,
+  payload
+});
+
 export const addProductToCart = (itemDetails) => (dispatch) => {
   dispatch(addToCartLoading(true));
   return axios
@@ -145,4 +160,25 @@ export const emptyCart = (cartId) => (dispatch) => {
       return dispatch(emptyCartError(response));
     })
     .catch(error => dispatch(emptyCartError(error)));
+};
+
+export const updateCustomerAddress = payload => dispatch => {
+  dispatch(updateCustomerRequest(true));
+  return axios
+    .put(`${config.apiUrl}/customers/address`, payload)
+    .then(response => {
+      if (response.status === 200) {
+        dispatch(updateCustomerRequest(false));
+        return dispatch(updateCustomerSuccess(response.data));
+      }
+    })
+    .catch(error => {
+      dispatch(updateCustomerRequest(false));
+      if (error.response) {
+        if (error.response.status === 400) {
+          return dispatch(updateAddressError(error.response.data.error.message))
+        }
+      }
+      return dispatch(updateAddressError('Unable to update this customer at the moment'));
+    })
 };

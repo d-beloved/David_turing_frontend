@@ -15,6 +15,7 @@ import {
 import Styles from './header.module.css';
 import { getAllDepartments } from '../../actions/departmentAction';
 import { getCartProduct } from '../../actions/shoppingCartAction';
+import { logout } from '../../actions/authAction';
 
 
 class Header extends  Component {
@@ -26,8 +27,14 @@ class Header extends  Component {
     getCartItems();
     return listDepartment();
   }
+
+  handleLogout = () => {
+    const { logoutUser } = this.props;
+    logoutUser();
+  }
+
   render() {
-    const { department, cart, ...rest } = this.props;
+    const { department, cart, isAuthenticated, ...rest } = this.props;
     return (
       <Navbar bg="light" expand="lg">
         <Navbar.Brand href="/" className={Styles.header}>SHOPMATE</Navbar.Brand>
@@ -57,7 +64,9 @@ class Header extends  Component {
             <i className={cx('fas fa-shopping-bag', Styles.shopcart)} />
             <span className={cx(Styles.badge, Styles.lblCartCount, 'badge-danger')}>{cart.length}</span>
           </Link>
-          <a href="/signin" className={Styles.bag}>Sign in</a>
+          {isAuthenticated ? (
+            <Link to='/' onClick={this.handleLogout}>LogOut</Link>
+          ) : <Link to='/signin' className={Styles.bag}>Sign In</Link>}
         </Navbar.Collapse>
       </Navbar>
     );
@@ -68,17 +77,21 @@ Header.propTypes = {
   listDepartment: PropTypes.func,
   department: PropTypes.array,
   getCartItems: PropTypes.func,
-  cart: PropTypes.array
+  cart: PropTypes.array,
+  logoutUser: PropTypes.func,
+  isAuthenticated: PropTypes.bool
 }
 
 const mapStateToProps = state => ({
   department: state.department.data,
   cart: state.getCartProduct.data,
+  isAuthenticated: state.auth.isAuthenticated
 });
 
 const mapDispatchToProps = dispatch => ({
   listDepartment: () => dispatch(getAllDepartments()),
-  getCartItems: () => dispatch(getCartProduct())
+  getCartItems: () => dispatch(getCartProduct()),
+  logoutUser: () => dispatch(logout())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Header);
