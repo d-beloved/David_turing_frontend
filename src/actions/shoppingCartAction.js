@@ -212,18 +212,16 @@ export const updateCustomerAddress = payload => dispatch => {
     })
 };
 
-export const createOrder = payload => dispatch => {
+export const createOrder = payload => async dispatch => {
   dispatch(createOderRequest(true));
-  return axios
-    .post(`${config.apiUrl}/orders`, payload)
-    .then(response => {
-      if (response.status === 200) {
-        dispatch(createOderRequest(false));
-        return dispatch(createOrderSuccess(response.data));
-      }
-      return dispatch(createOrderError(response));
-    })
-    .catch(error => dispatch(createOrderError(error)));
+  try {
+    const order = await (axios.post(`${config.apiUrl}/orders`, payload))
+    dispatch(createOderRequest(false));
+    return dispatch(createOrderSuccess(order));
+  } catch(error) {
+    dispatch(createOderRequest(false));
+    dispatch(createOrderError(error))
+  }
 };
 
 export const payWithStripe = payload => dispatch => {

@@ -1,14 +1,12 @@
 .footer{
-  background-color: #444547;
+  background-color: black;
   color: white;
-  position: relative;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  padding: 1rem;
+  height:200px;
+  padding: 5rem;
   text-align: center;
 }
 
 .Col {
   color: white;
+  font-size: 20px;
 }

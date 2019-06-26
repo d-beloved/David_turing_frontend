@@ -36,9 +36,9 @@ class SearchProduct extends Component {
     }
   }
 
-  handlePageChange = (decodedString, current, limit) => {
-    const { fetchDepartmentProduct } = this.props;
-    fetchDepartmentProduct(decodedString, current, limit)
+  handlePageChange = (current, limit) => {
+    const { fetchDepartmentProduct, location: { pathname }} = this.props;
+    fetchDepartmentProduct(pathname, current, limit)
   }
 
   render() {
@@ -51,7 +51,7 @@ class SearchProduct extends Component {
           </Container>
         </Jumbotron>
         <Pagination
-          onChange={this.handleProductPageChange}
+          onChange={this.handlePageChange}
           defaultCurrent={1}
           total={count}
           defaultPageSize={16}
@@ -72,12 +72,6 @@ class SearchProduct extends Component {
             })}
           </Row>
         </Container>
-        <Pagination
-          onChange={this.handleProductPageChange}
-          defaultCurrent={1}
-          total={count}
-          defaultPageSize={16}
-        />
       </Fragment>
     )
   }

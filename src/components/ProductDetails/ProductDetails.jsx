@@ -221,7 +221,7 @@ class ProductDetails extends Component {
                   </div>
                   <div className="action">
                     <button
-                      className={cx(Styles["add-to-cart"], "btn btn-default")}
+                      className={Styles.btn}
                       type="button"
                       onClick={this.handleAddToCart}
                       disabled={

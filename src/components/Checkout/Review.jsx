@@ -27,6 +27,7 @@ const styles = theme => ({
     justifyContent: 'flex-end',
   },
   button: {
+    backgroundColor: '#F62F5E',
     marginTop: theme.spacing.unit * 3,
     marginLeft: theme.spacing.unit,
   },

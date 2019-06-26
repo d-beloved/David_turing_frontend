@@ -5,10 +5,11 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Jumbotron, Container, Row } from 'react-bootstrap';
 import cx from 'classnames';
-import { Breadcrumb, Pagination } from 'antd';
+import { Pagination } from 'antd';
 import Styles from './products.module.css';
 import ProductCard from '../../common/productCard/ProductCard';
 import { getAllProducts } from '../../actions/productAction';
+
 
 class ProductsPage extends Component {
   constructor(props) {
@@ -37,10 +38,6 @@ class ProductsPage extends Component {
             <h1 className={cx("display-3", Styles.title)}>All Products</h1>
           </Container>
         </Jumbotron>
-        <Breadcrumb separator=">">
-          <Breadcrumb.Item href="/">Home</Breadcrumb.Item>
-          <Breadcrumb.Item href="">All Products</Breadcrumb.Item>
-        </Breadcrumb>
         <Pagination
           onChange={this.handleProductPageChange}
           defaultCurrent={1}
@@ -63,12 +60,6 @@ class ProductsPage extends Component {
             })}
           </Row>
         </Container>
-        <Pagination
-          onChange={this.handleProductPageChange}
-          defaultCurrent={1}
-          total={count}
-          defaultPageSize={16}
-        />
       </Fragment>
     );
   }

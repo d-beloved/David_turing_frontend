@@ -14,23 +14,26 @@ import CategoryProduct from './components/ProductsPage/CategoryProduct';
 import DepartmentProduct from './components/ProductsPage/DepartmentProduct';
 import SearchProduct from './components/ProductsPage/SearchProduct';
 
+
 const App = () => {
   return (
     <Router>
       <div className='App'>
         <Header />
-        <Switch>
-          <Route exact path='/' component={Homepage} />
-          <Route exact path='/catalog' component={ProductPage} />
-          <Route exact path="/catalog/product/:product_id" component={ProductDetails} />
-          <Route exact path="/catalog/category/:category_id" component={CategoryProduct} />
-          <Route exact path="/catalog/department/:department_id" component={DepartmentProduct} />
-          <Route exact path="/catalog/search" component={SearchProduct} />
-          <Route exact path='/signin' component={Auth} />
-          <Route exact path='/signup' component={Auth} />
-          <Route exact path='/cart' component={ShoppingCart} />
-          <ProtectedRoute exact path='/checkout' component={Checkout} />
-        </Switch>
+        <div className="content">
+          <Switch>
+            <Route exact path='/' component={Homepage} />
+            <Route exact path='/catalog' component={ProductPage} />
+            <Route exact path="/catalog/product/:product_id" component={ProductDetails} />
+            <Route exact path="/catalog/category/:category_id" component={CategoryProduct} />
+            <Route exact path="/catalog/department/:department_id" component={DepartmentProduct} />
+            <Route exact path="/catalog/search" component={SearchProduct} />
+            <Route exact path='/signin' component={Auth} />
+            <Route exact path='/signup' component={Auth} />
+            <Route exact path='/cart' component={ShoppingCart} />
+            <ProtectedRoute exact path='/checkout' component={Checkout} />
+          </Switch>
+        </div>
         <Footer />
       </div>
     </Router>

@@ -1,68 +1,47 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# TURING ECOMMERCE STORE
 
-## Available Scripts
+ReactJS frontend for e-commerce application
 
-In the project directory, you can run:
+## Available features
 
-### `npm start`
+* [x] Users can see all items when entering the website.
+* [x] Items are displayed properly based on the selected department and category.
+* [x] Users can search items through search box.
+* [x] Support pagination if we have too many items.
+* [x] Users can see product details by selecting a specific item.
+* [x] Users can add products to their shopping carts.
+* [x] Users can register/login using website custom forms.
+* [x] Users can checkout with 3rd party payment gateway: Stripe.
+* [x] Users will get confirmations over emails about their orders.
 
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Application URL
+This app is hosted at: https://turing-shop-client.herokuapp.com/
 
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
+## Getting started
 
-### `npm test`
+### Prerequisites
 
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+In order to install and run this project locally, you would need to have the following installed on you local machine.
 
-### `npm run build`
+* [**Node JS**](https://nodejs.org/en/)
 
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
+You also need the api server for this application. You can clone the repository and follow the set up instructions for the backend here:
+[https://github.com/d-beloved/David-Turing-Store.git](https://github.com/d-beloved/David-Turing-Store.git)
 
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
+### Installation
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+* Clone this repository
 
-### `npm run eject`
+```sh
+git clone https://github.com/d-beloved/David-Turing-Store.git
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+* Navigate to the project directory
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```sh
+cd path/to/David-Turing-Store
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+```
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+* Run `npm install` or `yarn` to instal the project's dependencies
+* Open a new terminal window and run `npm run start:dev` to start the application

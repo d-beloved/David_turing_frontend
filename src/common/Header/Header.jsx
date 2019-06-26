@@ -15,6 +15,26 @@ import { getCartProduct } from '../../actions/shoppingCartAction';
 import { logout } from '../../actions/authAction';
 
 
+
+const divStyles= {
+  background: 'black'
+};
+
+const nav = {
+  fontWeight: 'bold',
+  fontSize: '17px',
+  verticalAlign: 'text-bottom',
+  color: 'white',
+  paddingLeft: '20px'
+}
+
+const navBar = {
+  fontWeight: 'bold',
+  color: '#F62F5E',
+  fontSize: '30px',
+  paddingLeft: '60px'
+}
+
 class Header extends  Component {
   componentDidMount = () => {
     const {
@@ -38,42 +58,76 @@ class Header extends  Component {
 
   handleSearch = event => {
     event.preventDefault();
-    const { search } = this.state;
-    window.location.replace(`/catalog/search?${search}`);
+    if (this.state !== null) {
+      const { search } = this.state;
+      window.location.replace(`/catalog/search?${search}`);
+    }
   };
 
   render() {
     const { department, cart, isAuthenticated, ...rest } = this.props;
     return (
-      <Navbar bg="light" expand="lg">
-        <Navbar.Brand href="/" className={Styles.header}>SHOPMATE</Navbar.Brand>
-        <Navbar.Toggle {...rest} aria-controls="basic-navbar-nav" />
-        <Navbar.Collapse {...rest} id="basic-navbar-nav">
-          <Nav variant="pill" className={cx(Styles.navigation, "mr-auto")}>
-            {department.length > 0 && department.map(items => (
-              (
-                <Nav.Item key={items.department_id}>
-                  <Nav.Link href={`/catalog/department/${items.department_id}`} id="basic-nav-dropdown">{items.name}</Nav.Link>
-                </Nav.Item>
-              )
-            ))}
-          </Nav>
-          {/* <form onSubmit={this.handleSearch} className={Styles.container}>
-            <input onChange={this.handleSearchChange} type="text" placeholder="Search..." />
-            <div className={Styles.search} />
-          </form> */}
-          <Link
-            to="/cart"
-            className={Styles.bag}
-          >
-            <i className={cx('fas fa-shopping-bag', Styles.shopcart)} />
-            <span className={cx(Styles.badge, Styles.lblCartCount, 'badge-danger')}>{cart.length}</span>
-          </Link>
-          {isAuthenticated ? (
-            <Link to='/' onClick={this.handleLogout}>LogOut</Link>
-          ) : <Link to='/signin' className={Styles.bag}>Sign In</Link>}
-        </Navbar.Collapse>
-      </Navbar>
+      <container>
+        <Navbar style={divStyles} expand="lg">
+          <Navbar.Brand href="/" style={navBar}>
+            SHOPMATE
+          </Navbar.Brand>
+          <Navbar.Toggle {...rest} aria-controls="basic-navbar-nav" />
+          <Navbar.Collapse {...rest} id="basic-navbar-nav">
+            <Nav variant="pill" className="mr-auto">
+              {department.length > 0 &&
+                department.map(items => (
+                  <Nav.Item
+                    className={Styles.navItem}
+                    key={items.department_id}
+                  >
+                    <Nav.Link
+                      style={nav}
+                      href={`/catalog/department/${items.department_id}`}
+                      id="basic-nav-dropdown"
+                    >
+                      {items.name}
+                    </Nav.Link>
+                  </Nav.Item>
+                ))}
+            </Nav>
+            <form inline className={cx(Styles.wrap, "mr-sm-2")} onSubmit={this.handleSearch}>
+              <div className={Styles.search}>
+                <input
+                  type="text"
+                  onChange={this.handleSearchChange}
+                  className={Styles.searchTerm}
+                  placeholder="search..."
+                />
+                <button type="submit" className={Styles.searchButton}>
+                  <i className={cx("fa fa-search", Styles.icon)} />
+                </button>
+              </div>
+            </form>
+            <Link to="/cart" className={Styles.a}>
+              <i className={cx("fas fa-shopping-bag", Styles.shopcart)} />
+              <span
+                className={cx(
+                  Styles.badge,
+                  Styles.lblCartCount,
+                  "badge-danger"
+                )}
+              >
+                {cart.length}
+              </span>
+            </Link>
+            {isAuthenticated ? (
+              <Link to="/" className={Styles.auth} onClick={this.handleLogout}>
+                Log-out
+              </Link>
+            ) : (
+              <Link to="/signin" className={Styles.auth}>
+                Sign In
+              </Link>
+            )}
+          </Navbar.Collapse>
+        </Navbar>
+      </container>
     );
   }
 }

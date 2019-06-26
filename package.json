@@ -30,12 +30,15 @@
     "react-stripe-checkout": "^2.6.3",
     "redux": "^4.0.1",
     "redux-logger": "^3.0.6",
-    "redux-thunk": "^2.3.0"
+    "redux-thunk": "^2.3.0",
+    "serve": "^11.0.2"
   },
   "scripts": {
-    "start": "react-app-rewired start",
+    "dev": "react-app-rewired start",
+    "start": "serve -s build",
     "build": "react-app-rewired build",
     "test": "react-app-rewired test",
+    "heroku-postbuild": "npm run build",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {

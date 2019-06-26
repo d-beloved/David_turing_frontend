@@ -9,6 +9,26 @@
 
 .title {
   color: white;
+  font-size: 35px;
+}
+
+.subtitle {
+  font-size: 20px
+}
+
+.topText {
+  text-align: left;
+}
+
+.btn {
+  background-color: #f62f5e;
+  border-radius: 120px;
+  border-color: transparent;
+}
+
+.btn:hover {
+  background-color: #f62f5e;
+  border-color: transparent;
 }
 
 .bottom {
@@ -20,8 +40,14 @@
 }
 
 .filter {
-  margin-top: 20px;
+  padding: 20px;
   padding-left: 150px;
+}
+
+.filHead {
+  background: #2e2e2e;
+  color: white;
+  font-size: 10px bold;
 }
 
 .customPanelStyle {
@@ -30,4 +56,9 @@
   margin-Bottom: 24;
   border: 0;
   overflow: 'hidden';
+  text-align: left;
 };
+
+.a {
+  color: #f62f5e;
+}

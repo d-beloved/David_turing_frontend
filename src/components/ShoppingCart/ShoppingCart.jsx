@@ -6,9 +6,15 @@ import cookieParse from 'cookie-parse';
 import { Table } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { Icon } from 'antd';
+import Styles from './shoppingCart.module.css'
 import { deleteCartItem, emptyCart } from '../../actions/shoppingCartAction';
 
 const API = process.env.REACT_APP_IMAGE_BASE_URL;
+
+const cartDelete = {
+  color: 'red'
+};
+
 
 function Cart(props) {
   const { cart, emptyCartItem, removeItem } = props;
@@ -22,20 +28,27 @@ function Cart(props) {
 
   return (
     <Fragment>
-      <div>
-        {cart.length}
-        {' '}
-        Item(s) in Your cart
+      <div className={Styles.flexible}>
+        <div className={Styles.heading}>
+          {cart.length}
+          {' '}
+          Item(s) in Your cart
+        </div>
+        <div
+          className={Styles.empty}
+          value="Empty your cart"
+          tooltip="empty the cart"
+        >
+          Empty the cart
+          <br />
+          {' '}
+          <Icon
+            type="delete"
+            onClick={() => emptyCartItem(cartId)}
+          />
+        </div>
       </div>
-      <div
-        value="Empty your cart"
-      >
-        <Icon
-          type="delete"
-          onClick={() => emptyCartItem(cartId)}
-        />
-      </div>
-      <Table striped bordered hover>
+      <Table responsive striped bordered hover>
         <thead>
           <tr>
             <th>Item</th>
@@ -46,7 +59,7 @@ function Cart(props) {
             <th>Price</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody className={Styles.name}>
           {cart && cart.map(item => (
             <tr
               key={item.item_id}
@@ -59,7 +72,10 @@ function Cart(props) {
               </td>
               <td>
                 {item.name}
+                {'   '}
+                <br />
                 <Icon
+                  styles={cartDelete}
                   type="delete"
                   onClick={() => removeItem(item.item_id)}
                 />
@@ -75,19 +91,26 @@ function Cart(props) {
           ))}
         </tbody>
       </Table>
-      <Link
-        to='/catalog'
-        type='button'
-      >
-      Continue Shopping
-      </Link>
-      <Link
-        to='/checkout'
-        type='button'
-      >
-        Checkout
-      </Link>
-      <div />
+      <div className={Styles.flexible}>
+        <div>
+          <Link
+            className={Styles.catalog}
+            to='/catalog'
+            type='text'
+          >
+          Continue Shopping
+          </Link>
+        </div>
+        <div>
+          <Link
+            className={Styles.checkout}
+            to='/checkout'
+            type='text'
+          >
+            Checkout
+          </Link>
+        </div>
+      </div>
     </Fragment>
   )
 }

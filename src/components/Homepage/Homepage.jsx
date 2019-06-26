@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { Jumbotron, Container, Button, Col, Row } from 'react-bootstrap';
 import cx from 'classnames';
-import { Collapse, Icon } from 'antd';
+import { Collapse } from 'antd';
 import Styles from './homepage.module.css';
 import ProductCard from '../../common/productCard/ProductCard';
 import { getAllProducts } from '../../actions/productAction';
@@ -15,6 +15,10 @@ import { getAllCategories } from '../../actions/categoryAction'
 import { getAllDepartments } from '../../actions/departmentAction'
 
 const Panel = Collapse.Panel;
+
+const filterStyle = {
+  color: '#f62f5e'
+};
 
 class Homepage extends Component {
   constructor(props) {
@@ -38,15 +42,17 @@ class Homepage extends Component {
     return (
       <Fragment>
         <Jumbotron fluid className={cx(Styles.head)}>
-          <Container>
-            <h1 className={cx("display-3", Styles.title)}>Hello, world!</h1>
-            <p>
-              This is a simple hero unit, a simple jumbotron-style component
-              for calling extra attention to featured content or
-              information.
+          <Container className={Styles.topText}>
+            <h1 className={cx("display-3", Styles.title)}>Amazing Shirts at amazing prices</h1>
+            <p className={Styles.subtitle}>
+              Get nice t-shirts at amazing prices
+              <br />
+              with discount on every 2 items purchased
+              <br />
+              Visit the store now...
             </p>
             <p>
-              <Button href="/catalog" variant="primary">Go Shopping</Button>
+              <Button className={Styles.btn} href="/catalog" variant="primary">Go Shopping</Button>
             </p>
           </Container>
         </Jumbotron>
@@ -55,10 +61,9 @@ class Homepage extends Component {
             <Collapse
               defaultActiveKey={['1', '2']}
               bordered={false}
-              expandIcon={({ isActive }) => <Icon type="caret-right" rotate={isActive ? 90 : 0} />}
             >
-              <div>FILTER</div>
-              <Panel header="Departments" key="1" className={Styles.customPanelStyle}>
+              <div className={Styles.filHead}>FILTER</div>
+              <Panel header="Departments" key="1" className={Styles.customPanelStyle} showArrow={false}>
                 { departments && departments.map(department => {
                   const { department_id, name } = department;
                   return (
@@ -66,12 +71,12 @@ class Homepage extends Component {
                       key={department_id.toString()}
                       to={`/catalog/department/${department_id}`}
                     >
-                      <p>{name}</p>
+                      <p style={filterStyle}>{name}</p>
                     </Link>
                   )
                 })}
               </Panel>
-              <Panel header="Categories" key="2" className={Styles.customPanelStyle}>
+              <Panel header="Categories" key="2" className={Styles.customPanelStyle} showArrow={false}>
                 { categories && categories.map(category => {
                   const { name, category_id } = category;
                   return (
@@ -79,7 +84,7 @@ class Homepage extends Component {
                       key={category_id.toString()}
                       to={`/catalog/category/${category_id}`}
                     >
-                      <p>{name}</p>
+                      <p style={filterStyle}>{name}</p>
                     </Link>
                   );
                 })}
@@ -104,15 +109,13 @@ class Homepage extends Component {
           </Col>
         </Row>
         <Jumbotron fluid className={cx(Styles.bottom)}>
-          <Container>
-            <h1 className={cx("display-3", Styles.title)}>Hello, world!</h1>
-            <p>
-              This is a simple hero unit, a simple jumbotron-style component
-              for calling extra attention to featured content or
-              information.
+          <Container className={Styles.topText}>
+            <h1 className={cx("display-3", Styles.title)}>Check premium items</h1>
+            <p className={Styles.subtitle}>
+              And they come at unbelievable prices
             </p>
             <p>
-              <Button href="/products" variant="primary">Shop</Button>
+              <Button className={Styles.btn} href="/catalog" variant="primary">Go to Shop</Button>
             </p>
           </Container>
         </Jumbotron>

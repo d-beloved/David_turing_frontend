@@ -20,6 +20,7 @@ const styles = theme => ({
     position: 'relative',
   },
   layout: {
+    backgroundColor: '#F62F5E',
     width: 'auto',
     marginLeft: theme.spacing.unit * 2,
     marginRight: theme.spacing.unit * 2,

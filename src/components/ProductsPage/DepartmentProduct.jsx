@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Jumbotron, Container, Row } from 'react-bootstrap';
 import cx from 'classnames';
-import { Breadcrumb, Pagination } from 'antd';
+import { Pagination } from 'antd';
 import Styles from './products.module.css';
 import ProductCard from '../../common/productCard/ProductCard';
 import { getProductIndepartment } from '../../actions/productAction';
@@ -43,9 +43,10 @@ class DepartmentProduct extends Component {
     }
   }
 
-  handlePageChange = (department_id, current, limit) => {
-    const { fetchDepartmentProduct } = this.props;
-    fetchDepartmentProduct(department_id, current, limit)
+  handlePageChange = (current, limit) => {
+    const { fetchDepartmentProduct, match } = this.props;
+    const id = match.params.department_id;
+    fetchDepartmentProduct(id, current, limit)
   }
 
   render() {
@@ -57,12 +58,8 @@ class DepartmentProduct extends Component {
             <h1 className={cx("display-3", Styles.title)}>{departments.name}</h1>
           </Container>
         </Jumbotron>
-        <Breadcrumb separator=">">
-          <Breadcrumb.Item href="/">Home</Breadcrumb.Item>
-          <Breadcrumb.Item href="">{departments.name}</Breadcrumb.Item>
-        </Breadcrumb>
         <Pagination
-          onChange={this.handleProductPageChange}
+          onChange={this.handlePageChange}
           defaultCurrent={1}
           total={count}
           defaultPageSize={16}
@@ -83,12 +80,6 @@ class DepartmentProduct extends Component {
             })}
           </Row>
         </Container>
-        <Pagination
-          onChange={this.handleProductPageChange}
-          defaultCurrent={1}
-          total={count}
-          defaultPageSize={16}
-        />
       </Fragment>
     )
   }

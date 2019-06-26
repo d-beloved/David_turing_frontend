@@ -5,7 +5,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link, Redirect } from 'react-router-dom';
-import { Form, Icon, Input, Button } from 'antd';
+import { Form, Icon, Input, Button, Checkbox } from 'antd';
 import Styles from './auth.module.css';
 import { signinUser, signupUser } from '../../actions/authAction';
 
@@ -53,72 +53,86 @@ class Auth extends Component {
     }
 
     return (
-      <Form onSubmit={this.handleSubmit} className={Styles.login_form}>
-        <div>{isRegisterPage ? "Sign Up" : "Sign In"}</div>
-        {isRegisterPage ? (
-          <Form.Item>
-            <Input
-              onChange={this.handleInputChange}
-              prefix={<Icon type="user" style={{ color: "rgba(0,0,0,.25)" }} />}
-              type="name"
-              placeholder="Name"
-              value={name}
-              name="name"
-              id="name"
-              required
-              minLength="5"
-              maxLength="50"
-            />
-          </Form.Item>
-        ) : null}
-        <Form.Item>
-          <Input
-            onChange={this.handleInputChange}
-            prefix={<Icon type="mail" style={{ color: "rgba(0,0,0,.25)" }} />}
-            type="email"
-            name="email"
-            placeholder="Email"
-            value={email}
-            id="email"
-            autoComplete="email"
-            autoFocus
-            required
-          />
-        </Form.Item>
-        <Form.Item>
-          <Input
-            onChange={this.handleInputChange}
-            prefix={<Icon type="lock" style={{ color: "rgba(0,0,0,.25)" }} />}
-            type="password"
-            name="password"
-            id="password"
-            value={password}
-            placeholder="Password"
-            required
-          />
-        </Form.Item>
-        {error && (
-          <div error id="">
-            {error}
-          </div>
-        )}
-        <Form.Item>
-          <Button
-            type="primary"
-            htmlType="submit"
-            className={Styles.login_form_button}
-          >
-            {isRegisterPage ? "Sign up" : "Sign in"}
-          </Button>
-          {promptMessage}
-          <Link to={promptPath}>
-            {' '}
-            {
-              promptAction
-            }
-          </Link>
-        </Form.Item>
-      </Form>
+      <container className={Styles.auth}>
+        <div className={Styles.card}>
+          <Form onSubmit={this.handleSubmit} style={{ width: '300px', outlineColor: 'black' }}>
+            <div style={{ fontSize: '25px', color: '#F62F5E' }}>{isRegisterPage ? "Sign Up" : "Sign In"}</div>
+            {isRegisterPage ? (
+              <Form.Item>
+                <Input
+                  style={{ outline: 'none' }}
+                  onChange={this.handleInputChange}
+                  prefix={<Icon type="user" style={{ color: "rgba(0,0,0,.25)" }} />}
+                  type="name"
+                  placeholder="Name"
+                  value={name}
+                  name="name"
+                  id="name"
+                  required
+                  minLength="5"
+                  maxLength="50"
+                />
+              </Form.Item>
+            ) : null}
+            <Form.Item>
+              <Input
+                style={{ outline: 'none' }}
+                onChange={this.handleInputChange}
+                prefix={<Icon type="mail" style={{ color: "rgba(0,0,0,.25)" }} />}
+                type="email"
+                name="email"
+                placeholder="Email"
+                value={email}
+                id="email"
+                autoComplete="email"
+                autoFocus
+                required
+              />
+            </Form.Item>
+            <Form.Item>
+              <Input
+                style={{ outline: 'none' }}
+                onChange={this.handleInputChange}
+                prefix={<Icon type="lock" style={{ color: "rgba(0,0,0,.25)" }} />}
+                type="password"
+                name="password"
+                id="password"
+                value={password}
+                placeholder="Password"
+                required
+              />
+            </Form.Item>
+            <Form.Item>
+              <Checkbox style={{ float: 'left'}}>Remember me</Checkbox>
+            </Form.Item>
+            {error && (
+              <div
+                style={{ color: 'red' }}
+                error
+                id=""
+              >
+                {error}
+              </div>
+            )}
+            <Form.Item>
+              <Button
+                type="primary"
+                htmlType="submit"
+                className={Styles.login_form_button}
+              >
+                {isRegisterPage ? "Sign up" : "Sign in"}
+              </Button>
+              {promptMessage}
+              <Link className={Styles.action} to={promptPath}>
+                {' '}
+                {
+                  promptAction
+                }
+              </Link>
+            </Form.Item>
+          </Form>
+        </div>
+      </container>
     );
   }
 }

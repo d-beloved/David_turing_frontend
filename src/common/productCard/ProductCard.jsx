@@ -19,6 +19,7 @@ const ProductCard = (props) => {
         style={{ width: 240 }}
         cover={(
           <img
+            className={Styles.img}
             alt={name}
             src={image}
           />

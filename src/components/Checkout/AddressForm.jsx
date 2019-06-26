@@ -18,6 +18,7 @@ import { updateCustomerAddress } from '../../actions/shoppingCartAction';
 
 const styles = theme => ({
   button: {
+    backgroundColor: '#F62F5E',
     marginTop: theme.spacing.unit * 3,
     marginLeft: theme.spacing.unit,
   },

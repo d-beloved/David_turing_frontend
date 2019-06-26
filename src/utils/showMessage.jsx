@@ -38,8 +38,8 @@ class ShowMessage extends Component {
         aria-live="polite"
         aria-atomic="true"
         style={{
-          position: "relative",
-          minHeight: "100px"
+          vertical: 'top',
+          horizontal: 'right',
         }}
       >
         <Col>
@@ -48,6 +48,7 @@ class ShowMessage extends Component {
               position: 'absolute',
               top: 0,
               right: 0,
+              color: 'green'
             }}
             onClose={this.handleClose}
             show={show}
