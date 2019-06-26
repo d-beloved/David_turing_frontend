@@ -3,7 +3,8 @@
 import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
 import cookieParse from 'cookie-parse';
-import { Table, Button } from 'react-bootstrap';
+import { Table } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 import { Icon } from 'antd';
 import { deleteCartItem, emptyCart } from '../../actions/shoppingCartAction';
 
@@ -74,14 +75,25 @@ function Cart(props) {
           ))}
         </tbody>
       </Table>
-      <Button variant="primary" href="/catalog">Back to Shop</Button>
-      <Button variant="danger" href="/checkout">Checkout</Button>
+      <Link
+        to='/catalog'
+        type='button'
+      >
+      Continue Shopping
+      </Link>
+      <Link
+        to='/checkout'
+        type='button'
+      >
+        Checkout
+      </Link>
+      <div />
     </Fragment>
   )
 }
 
 const mapStateToProps = state => ({
-  cart: state.getCartProduct.data
+  cart: state.cart.data
 })
 
 const mapDispatchToProps = dispatch => ({

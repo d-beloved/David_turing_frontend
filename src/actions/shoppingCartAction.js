@@ -91,6 +91,36 @@ const updateAddressError = payload => ({
   payload
 });
 
+const createOderRequest = payload => ({
+  type: types.CREATE_ORDER,
+  payload
+});
+
+const createOrderSuccess = payload => ({
+  type: types.CREATE_ORDER_SUCCESS,
+  payload
+});
+
+const createOrderError = payload => ({
+  type: types.CREATE_ORDER_ERROR,
+  payload
+});
+
+const payOrder = payload => ({
+  type: types.PAY_WITH_STRIPE,
+  payload
+});
+
+const payOrderSuccess = payload => ({
+  type: types.PAY_WITH_STRIPE_SUCCESS,
+  payload
+});
+
+const payOrderError = payload => ({
+  type: types.PAY_WITH_STRIPE_ERROR,
+  payload
+});
+
 export const addProductToCart = (itemDetails) => (dispatch) => {
   dispatch(addToCartLoading(true));
   return axios
@@ -134,18 +164,17 @@ export const updateCartItem = (update) => (dispatch) => {
     .catch(error => dispatch(updateCartItemError(error)));
 };
 
-export const deleteCartItem = (item_id) => (dispatch) => {
+export const deleteCartItem = (item_id) => async (dispatch) => {
   dispatch(deleteCartItemLoading(true));
-  return axios
-    .delete(`${config.apiUrl}/shoppingcart/removeProduct/${item_id}`)
-    .then(response => {
-      if (response.status === 200) {
-        dispatch(deleteCartItemLoading(false));
-        return dispatch(deleteCartItemSuccess(response));
-      }
-      return dispatch(deleteCartItemError(response));
-    })
-    .catch(error => dispatch(deleteCartItemError(error)));
+  try {
+    const cart = await (axios.delete(`${config.apiUrl}/shoppingcart/removeProduct/${item_id}`))
+    dispatch(deleteCartItemLoading(false));
+    dispatch(getCartProduct());
+    return dispatch(deleteCartItemSuccess(cart));
+  } catch(error) {
+    dispatch(deleteCartItemLoading(false));
+    return dispatch(deleteCartItemError(error));
+  }
 };
 
 export const emptyCart = (cartId) => (dispatch) => {
@@ -181,4 +210,32 @@ export const updateCustomerAddress = payload => dispatch => {
       }
       return dispatch(updateAddressError('Unable to update this customer at the moment'));
     })
+};
+
+export const createOrder = payload => dispatch => {
+  dispatch(createOderRequest(true));
+  return axios
+    .post(`${config.apiUrl}/orders`, payload)
+    .then(response => {
+      if (response.status === 200) {
+        dispatch(createOderRequest(false));
+        return dispatch(createOrderSuccess(response.data));
+      }
+      return dispatch(createOrderError(response));
+    })
+    .catch(error => dispatch(createOrderError(error)));
+};
+
+export const payWithStripe = payload => dispatch => {
+  dispatch(payOrder(true));
+  return axios
+    .post(`${config.apiUrl}/stripe/charge`, payload)
+    .then(response => {
+      if (response.status === 200) {
+        dispatch(payOrder(false));
+        return dispatch(payOrderSuccess(response.data));
+      }
+      return dispatch(payOrderError(response));
+    })
+    .catch(error => dispatch(payOrderError(error)));
 };

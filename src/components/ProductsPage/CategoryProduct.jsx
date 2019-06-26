@@ -1,45 +1,63 @@
-/* eslint-disable react/forbid-prop-types */
-/* eslint-disable react/require-default-props */
+/* eslint-disable react/no-unused-state */
+/* eslint-disable react/prop-types */
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
 import { Jumbotron, Container, Row } from 'react-bootstrap';
 import cx from 'classnames';
 import { Breadcrumb, Pagination } from 'antd';
 import Styles from './products.module.css';
 import ProductCard from '../../common/productCard/ProductCard';
-import { getAllProducts } from '../../actions/productAction';
+import { getProductInCategory } from '../../actions/productAction';
+import { getCategory } from '../../actions/categoryAction';
 
-class ProductsPage extends Component {
+
+class CategoryProduct extends Component {
   constructor(props) {
-    super(props);
-    this.state = {};
+    super(props)
+    this.state = {
+      category_id: null
+    };
   }
 
   componentDidMount = () => {
     const {
-      fetchProducts
+      fetchCategoryProduct,
+      fetchCategory,
+      match
     } = this.props;
-    return fetchProducts(1, 16);
+    const id = match.params.category_id;
+    this.setState({
+      category_id: id
+    })
+    fetchCategory(id);
+    return fetchCategoryProduct(id, 1, 16)
   }
 
-  handleProductPageChange = (current, limit) => {
-      const { fetchProducts } = this.props;
-      fetchProducts(current, limit);
+  componentDidUpdate(prevProps) {
+    const { fetchCategoryProduct, fetchCategory, match } = this.props;
+    if (prevProps.match.params.category_id !== match.params.category_id) {
+      fetchCategory(match.params.category_id)
+      return fetchCategoryProduct(match.params.category_id, 1, 16);
+    }
+  }
+
+  handlePageChange = (current, limit) => {
+    const { fetchCategoryProduct } = this.props;
+    fetchCategoryProduct(current, limit)
   }
 
   render() {
-    const { products, count } = this.props;
+    const { products, count, category } = this.props;
     return (
       <Fragment>
         <Jumbotron fluid className={cx(Styles.head)}>
           <Container>
-            <h1 className={cx("display-3", Styles.title)}>All Products</h1>
+            <h1 className={cx("display-3", Styles.title)}>{category.name}</h1>
           </Container>
         </Jumbotron>
         <Breadcrumb separator=">">
           <Breadcrumb.Item href="/">Home</Breadcrumb.Item>
-          <Breadcrumb.Item href="">All Products</Breadcrumb.Item>
+          <Breadcrumb.Item href="">{category.name}</Breadcrumb.Item>
         </Breadcrumb>
         <Pagination
           onChange={this.handleProductPageChange}
@@ -70,23 +88,19 @@ class ProductsPage extends Component {
           defaultPageSize={16}
         />
       </Fragment>
-    );
+    )
   }
-}
-
-ProductsPage.propTypes = {
-  fetchProducts: PropTypes.func,
-  products: PropTypes.array,
-  count: PropTypes.number
 }
 
 const mapStateToProps = state => ({
   products: state.products.data.rows,
-  count: state.products.data.count
+  count: state.products.data.count,
+  category: state.category.category
 })
 
 const mapDispatchToProps = dispatch => ({
-  fetchProducts: (page, limit) => dispatch(getAllProducts(page, limit)),
-});
+  fetchCategoryProduct: (category_id, page, limit) => dispatch(getProductInCategory(category_id, page, limit)),
+  fetchCategory: (category_id) => dispatch(getCategory(category_id))
+})
 
-export default connect(mapStateToProps, mapDispatchToProps)(ProductsPage);
+export default connect(mapStateToProps, mapDispatchToProps)(CategoryProduct);

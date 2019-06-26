@@ -44,13 +44,13 @@ class AddressForm extends Component {
     if (nextProps.user && nextProps.user.name !== prevState.name) {
       return {
         name: nextProps.user ? nextProps.user.name : '',
-        address1: nextProps.user ? nextProps.user.address_1 : '',
-        address2: nextProps.user ? nextProps.user.address_2 : '',
+        address_1: nextProps.user ? nextProps.user.address_1 : '',
+        address_2: nextProps.user ? nextProps.user.address_2 : '',
         city: nextProps.user ? nextProps.user.city : '',
         region: nextProps.user ? nextProps.user.region : '',
-        postalCode: nextProps.user ? nextProps.user.postal_code : '',
+        postal_code: nextProps.user ? nextProps.user.postal_code : '',
         country: nextProps.user ? nextProps.user.country : '',
-        shippingRegionId: nextProps.user
+        shipping_region_id: nextProps.user
           ? nextProps.user.shipping_region_id
           : '',
       };
@@ -158,8 +158,8 @@ class AddressForm extends Component {
             <Grid item xs={12}>
               <TextField
                 required
-                id="address1"
-                name="address1"
+                id="address_1"
+                name="address_1"
                 label="Address 1"
                 fullWidth
                 autoComplete="billing address-1"
@@ -169,8 +169,8 @@ class AddressForm extends Component {
             </Grid>
             <Grid item xs={12}>
               <TextField
-                id="address2"
-                name="address2"
+                id="address_2"
+                name="address_2"
                 label="Address line 2"
                 fullWidth
                 autoComplete="billing address-2"
@@ -202,8 +202,8 @@ class AddressForm extends Component {
             <Grid item xs={12} sm={6}>
               <TextField
                 required
-                id="postalCode"
-                name="postalCode"
+                id="postal_code"
+                name="postal_code"
                 label="Zip / Postal code"
                 fullWidth
                 autoComplete="billing postal-code"
@@ -225,7 +225,7 @@ class AddressForm extends Component {
             </Grid>
             <Grid item xs={12}>
               <FormControl>
-                <InputLabel htmlFor="shippingRegionId">
+                <InputLabel htmlFor="shipping_region_id">
                   Shipping Region
                 </InputLabel>
                 <Select
@@ -234,14 +234,14 @@ class AddressForm extends Component {
                   value={shipping_region_id}
                   onChange={this.handleInputChange}
                   inputProps={{
-                    name: 'shippingRegionId',
-                    id: 'shippingRegionId',
+                    name: 'shipping_region_id',
+                    id: 'shipping_region_id',
                   }}
                 >
                   <option value="" />
-                  <option value={2}>US / Canada</option>
-                  <option value={3}>Europe</option>
-                  <option value={4}>Rest of World</option>
+                  <option value='2'>US / Canada</option>
+                  <option value='3'>Europe</option>
+                  <option value='4'>Rest of World</option>
                 </Select>
               </FormControl>
             </Grid>

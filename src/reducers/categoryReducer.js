@@ -7,6 +7,7 @@ export const allCategoryReducer = (
   action
 ) => {
   switch (action.type) {
+    case types.FETCH_ONE_CATEGORY_LOADING:
     case types.FETCH_CATEGORY_LOADING:
       return {
         ...state,
@@ -17,6 +18,12 @@ export const allCategoryReducer = (
         ...state,
         data: action.payload.data
       };
+    case types.FETCH_ONE_CATEGORY_SUCCESS:
+      return {
+        ...state,
+        category: action.payload.data
+      }
+    case types.FETCH_ONE_CATEGORY_ERROR:
     case types.FETCH_CATEGORY_ERROR:
       return {
         ...state,

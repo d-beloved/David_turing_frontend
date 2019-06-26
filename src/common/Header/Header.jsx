@@ -8,11 +8,8 @@ import cx from 'classnames';
 import {
   Navbar,
   Nav,
-  Form,
-  FormControl,
-  Button
 } from 'react-bootstrap';
-import Styles from './header.module.css';
+import Styles from './header.module.scss';
 import { getAllDepartments } from '../../actions/departmentAction';
 import { getCartProduct } from '../../actions/shoppingCartAction';
 import { logout } from '../../actions/authAction';
@@ -33,6 +30,18 @@ class Header extends  Component {
     logoutUser();
   }
 
+  handleSearchChange = event => {
+    this.setState({
+      search: event.target.value,
+    });
+  };
+
+  handleSearch = event => {
+    event.preventDefault();
+    const { search } = this.state;
+    window.location.replace(`/catalog/search?${search}`);
+  };
+
   render() {
     const { department, cart, isAuthenticated, ...rest } = this.props;
     return (
@@ -44,19 +53,15 @@ class Header extends  Component {
             {department.length > 0 && department.map(items => (
               (
                 <Nav.Item key={items.department_id}>
-                  <Nav.Link id="basic-nav-dropdown">{items.name}</Nav.Link>
+                  <Nav.Link href={`/catalog/department/${items.department_id}`} id="basic-nav-dropdown">{items.name}</Nav.Link>
                 </Nav.Item>
               )
             ))}
           </Nav>
-          <Form inline>
-            <FormControl
-              type="text"
-              placeholder="Search"
-              className="mr-sm-2"
-            />
-            <Button variant="outline-success">Search</Button>
-          </Form>
+          {/* <form onSubmit={this.handleSearch} className={Styles.container}>
+            <input onChange={this.handleSearchChange} type="text" placeholder="Search..." />
+            <div className={Styles.search} />
+          </form> */}
           <Link
             to="/cart"
             className={Styles.bag}
@@ -84,7 +89,7 @@ Header.propTypes = {
 
 const mapStateToProps = state => ({
   department: state.department.data,
-  cart: state.getCartProduct.data,
+  cart: state.cart.data,
   isAuthenticated: state.auth.isAuthenticated
 });
 

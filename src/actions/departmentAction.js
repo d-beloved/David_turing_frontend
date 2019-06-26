@@ -18,6 +18,21 @@ const fetchDepartmentError = payload => ({
   payload
 });
 
+const fetchOneDepartmentSuccess = payload => ({
+  type: types.FETCH_ONE_DEPARTMENT_SUCCESS,
+  payload
+});
+
+const fetchOneDepartmentLoading = payload => ({
+  type: types.FETCH_ONE_DEPARTMENT_LOADING,
+  payload
+});
+
+const fetchOneDepartmentError = payload => ({
+  type: types.FETCH_ONE_DEPARTMENT_ERROR,
+  payload
+});
+
 export const getAllDepartments = () => (dispatch) => {
   dispatch(fetchDepartmentLoading(true));
   return axios
@@ -30,4 +45,18 @@ export const getAllDepartments = () => (dispatch) => {
       return dispatch(fetchDepartmentError(response));
     })
     .catch(error => dispatch(fetchDepartmentError(error)));
+};
+
+export const getDepartments = (department_id) => (dispatch) => {
+  dispatch(fetchOneDepartmentLoading(true));
+  return axios
+    .get(`${config.apiUrl}/departments/${department_id}`)
+    .then(response => {
+      if (response.status === 200) {
+        dispatch(fetchOneDepartmentLoading(false));
+        return dispatch(fetchOneDepartmentSuccess(response));
+      }
+      return dispatch(fetchOneDepartmentError(response));
+    })
+    .catch(error => dispatch(fetchOneDepartmentError(error)));
 };

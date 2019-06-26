@@ -48,6 +48,12 @@ class ProductDetails extends Component {
   componentDidUpdate(prevProps) {
     const { fetchProductDetail, match, fetchProductAttributes } = this.props;
     if (prevProps.match.params.product_id !== match.params.product_id) {
+      // eslint-disable-next-line react/no-did-update-set-state
+      this.setState({
+        color: 'Select color',
+        size: 'Select size',
+        quantity: 1,
+      })
       fetchProductAttributes(match.params.product_id);
       return fetchProductDetail(match.params.product_id);
     }
@@ -273,7 +279,7 @@ ProductDetails.propTypes = {
 
 const mapStateToProps = state => ({
   products: state.products.data.rows,
-  productDetail: state.oneProduct.data,
+  productDetail: state.products.oneProduct,
   attributes: state.attributes.data
 })
 

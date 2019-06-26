@@ -7,6 +7,7 @@ export const allDepartmentReducer = (
   action
 ) => {
   switch (action.type) {
+    case types.FETCH_ONE_DEPARTMENT_LOADING:
     case types.FETCH_DEPARTMENT_LOADING:
       return {
         ...state,
@@ -17,6 +18,12 @@ export const allDepartmentReducer = (
         ...state,
         data: action.payload.data
       };
+    case types.FETCH_ONE_DEPARTMENT_SUCCESS:
+      return {
+        ...state,
+        department: action.payload.data
+      };
+    case types.FETCH_ONE_DEPARTMENT_ERROR:
     case types.FETCH_DEPARTMENT_ERROR:
       return {
         ...state,

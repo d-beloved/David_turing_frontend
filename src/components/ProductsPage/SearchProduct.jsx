@@ -1,31 +1,44 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable react/forbid-prop-types */
 /* eslint-disable react/require-default-props */
+/* eslint-disable react/no-unused-state */
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
 import { Jumbotron, Container, Row } from 'react-bootstrap';
 import cx from 'classnames';
-import { Breadcrumb, Pagination } from 'antd';
+import { Pagination } from 'antd';
 import Styles from './products.module.css';
 import ProductCard from '../../common/productCard/ProductCard';
-import { getAllProducts } from '../../actions/productAction';
+import { searchForProduct } from '../../actions/productAction';
 
-class ProductsPage extends Component {
+
+class SearchProduct extends Component {
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {};
   }
 
   componentDidMount = () => {
     const {
-      fetchProducts
+      fetchSearchResult
     } = this.props;
-    return fetchProducts(1, 16);
+
+    const { search } = window.location;
+    const decodedString = decodeURIComponent(search.substring(1));
+
+    return fetchSearchResult(decodedString, 1, 16)
   }
 
-  handleProductPageChange = (current, limit) => {
-      const { fetchProducts } = this.props;
-      fetchProducts(current, limit);
+  componentDidUpdate(prevProps) {
+    const { fetchSearchResult, location: { pathname } } = this.props;
+    if (pathname !== prevProps.location.pathname) {
+      return fetchSearchResult();
+    }
+  }
+
+  handlePageChange = (decodedString, current, limit) => {
+    const { fetchDepartmentProduct } = this.props;
+    fetchDepartmentProduct(decodedString, current, limit)
   }
 
   render() {
@@ -34,13 +47,9 @@ class ProductsPage extends Component {
       <Fragment>
         <Jumbotron fluid className={cx(Styles.head)}>
           <Container>
-            <h1 className={cx("display-3", Styles.title)}>All Products</h1>
+            <h1 className={cx("display-3", Styles.title)}>Search Results</h1>
           </Container>
         </Jumbotron>
-        <Breadcrumb separator=">">
-          <Breadcrumb.Item href="/">Home</Breadcrumb.Item>
-          <Breadcrumb.Item href="">All Products</Breadcrumb.Item>
-        </Breadcrumb>
         <Pagination
           onChange={this.handleProductPageChange}
           defaultCurrent={1}
@@ -70,14 +79,8 @@ class ProductsPage extends Component {
           defaultPageSize={16}
         />
       </Fragment>
-    );
+    )
   }
-}
-
-ProductsPage.propTypes = {
-  fetchProducts: PropTypes.func,
-  products: PropTypes.array,
-  count: PropTypes.number
 }
 
 const mapStateToProps = state => ({
@@ -86,7 +89,7 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-  fetchProducts: (page, limit) => dispatch(getAllProducts(page, limit)),
-});
+  fetchSearchResult: (query_string, page, limit) => dispatch(searchForProduct(query_string, page, limit))
+})
 
-export default connect(mapStateToProps, mapDispatchToProps)(ProductsPage);
+export default connect(mapStateToProps, mapDispatchToProps)(SearchProduct);

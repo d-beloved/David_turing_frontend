@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable react/require-default-props */
 /* eslint-disable react/forbid-prop-types */
 import React, { Component } from 'react';
@@ -8,32 +9,6 @@ import { Form, Icon, Input, Button } from 'antd';
 import Styles from './auth.module.css';
 import { signinUser, signupUser } from '../../actions/authAction';
 
-
-// function validatePassword(value) {
-//   if (value) {
-//     return {
-//       validateStatus: 'success',
-//       errorMsg: null,
-//     };
-//   }
-//   return {
-//     validateStatus: 'error',
-//     errorMsg: 'Please input your Password!',
-//   };
-// }
-
-// function validateName(value) {
-//   if (value.length < 5 || value.length > 50) {
-//     return {
-//       validateStatus: 'error',
-//       errorMsg: 'Name should be more than 5 characters!'
-//     }
-//   }
-//   return {
-//     validateStatus: 'success',
-//     errorMsg: null
-//   }
-// }
 
 class Auth extends Component {
   constructor(props) {
@@ -64,23 +39,17 @@ class Auth extends Component {
     return handleLogin(signinDetails);
   };
 
-  // rules: [{ required: true, min: 5, max: 50, message: 'Name should be more than 5 characters!' }],
-  // rules: [
-  //   { type: 'email', message: 'The input is not valid E-mail!' },
-  //   { required: true, message: 'Please input your Email!' }
-  // ],
-  // rules: [{ required: true, message: 'Please input your Password!' }],
-
   render() {
     const { name, email, password } = this.state;
-    const { isAuthenticated, match, error } = this.props;
+    const { isAuthenticated, match, error, location } = this.props;
+    const { from } = location.state || { from: { pathname: '/'} }
     const isRegisterPage = match.path === "/signup";
     const promptMessage = isRegisterPage ? "Already a user" : "Not a user";
     const promptAction = isRegisterPage ? "Sign in" : "Sign up";
     const promptPath = isRegisterPage ? "/signin" : "/signup";
 
     if (isAuthenticated) {
-      return <Redirect to="" />;
+      return <Redirect to={from} />;
     }
 
     return (
@@ -96,6 +65,9 @@ class Auth extends Component {
               value={name}
               name="name"
               id="name"
+              required
+              minLength="5"
+              maxLength="50"
             />
           </Form.Item>
         ) : null}
@@ -110,6 +82,7 @@ class Auth extends Component {
             id="email"
             autoComplete="email"
             autoFocus
+            required
           />
         </Form.Item>
         <Form.Item>
@@ -121,6 +94,7 @@ class Auth extends Component {
             id="password"
             value={password}
             placeholder="Password"
+            required
           />
         </Form.Item>
         {error && (

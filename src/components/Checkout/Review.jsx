@@ -1,3 +1,5 @@
+/* eslint-disable react/forbid-prop-types */
+/* eslint-disable react/prop-types */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -8,7 +10,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import Grid from '@material-ui/core/Grid';
 import { Button } from '@material-ui/core';
-import { createOrder } from '../../actions/cart.action';
+import { createOrder } from '../../actions/shoppingCartAction';
 
 const styles = theme => ({
   listItem: {
@@ -35,8 +37,9 @@ class Review extends Component {
 
   handleCreateOrder = async () => {
     const { handleNext, confirmOrder, user } = this.props;
-    const shippingId = user.shipping_region_id;
-    await confirmOrder({ shippingId });
+    const shipping_id = user.shipping_region_id;
+    const tax_id = '2';
+    await confirmOrder({ shipping_id, tax_id });
     handleNext();
   };
 
@@ -49,9 +52,8 @@ class Review extends Component {
       user.postal_code,
     ];
     const discountedTotal = products.reduce((acc, curr) => {
-      const price = Number(curr.Product.price);
-      const discountedPrice = Number(curr.Product.discounted_price);
-      return Number(acc) + (discountedPrice || price) * curr.quantity;
+      const price = Number(curr.subtotal);
+      return Number(acc) + price;
     }, 0);
 
     return (
@@ -63,18 +65,19 @@ class Review extends Component {
           {products.map(product => (
             <ListItem className={classes.listItem} key={product.item_id}>
               <ListItemText
-                primary={product.Product.name}
+                primary={product.name}
                 secondary={product.attributes}
               />
               <Typography variant="body2">
-                {(product.Product.price * product.quantity).toFixed(2)}
+                {(product.price * product.quantity).toFixed(2)}
               </Typography>
             </ListItem>
           ))}
           <ListItem className={classes.listItem}>
             <ListItemText primary="Total(including discount)" />
             <Typography variant="subtitle1" className={classes.total}>
-              ${discountedTotal.toFixed(2)}
+              $
+              {discountedTotal.toFixed(2)}
             </Typography>
           </ListItem>
         </List>
@@ -114,9 +117,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  confirmOrder(payload) {
-    return dispatch(createOrder(payload));
-  },
+  confirmOrder: (payload) => dispatch(createOrder(payload))
 });
 
 export default connect(

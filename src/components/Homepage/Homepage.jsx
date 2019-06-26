@@ -1,7 +1,9 @@
+/* eslint-disable react/jsx-key */
 /* eslint-disable react/require-default-props */
 /* eslint-disable react/forbid-prop-types */
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { Jumbotron, Container, Button, Col, Row } from 'react-bootstrap';
 import cx from 'classnames';
@@ -33,12 +35,6 @@ class Homepage extends Component {
 
   render() {
     const { products, categories, departments } = this.props;
-    // const featuredProducts = products.slice(8, 15);
-    // for (let i = 0; i < 6; i++) {
-    //   console.log('holla', feat);
-    //   const product = products[(Math.floor(Math.random()*10) + 1)];
-    //   featuredProducts.push(product);
-    // }
     return (
       <Fragment>
         <Jumbotron fluid className={cx(Styles.head)}>
@@ -66,7 +62,12 @@ class Homepage extends Component {
                 { departments && departments.map(department => {
                   const { department_id, name } = department;
                   return (
-                    <p key={department_id}>{name}</p>
+                    <Link
+                      key={department_id.toString()}
+                      to={`/catalog/department/${department_id}`}
+                    >
+                      <p>{name}</p>
+                    </Link>
                   )
                 })}
               </Panel>
@@ -74,7 +75,12 @@ class Homepage extends Component {
                 { categories && categories.map(category => {
                   const { name, category_id } = category;
                   return (
-                    <p key={category_id}>{name}</p>
+                    <Link
+                      key={category_id.toString()}
+                      to={`/catalog/category/${category_id}`}
+                    >
+                      <p>{name}</p>
+                    </Link>
                   );
                 })}
               </Panel>
