@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { Jumbotron, Container, Row } from 'react-bootstrap';
 import cx from 'classnames';
 import { Pagination } from 'antd';
+import Loader from '../../common/Loader';
 import Styles from './products.module.css';
 import ProductCard from '../../common/productCard/ProductCard';
 import { getProductInCategory } from '../../actions/productAction';
@@ -48,12 +49,14 @@ class CategoryProduct extends Component {
   }
 
   render() {
-    const { products, count, category } = this.props;
+    const { products, count, category, loading } = this.props;
     return (
       <Fragment>
         <Jumbotron fluid className={cx(Styles.head)}>
           <Container>
-            <h1 className={cx("display-3", Styles.title)}>{category.name}</h1>
+            <h1 className={cx("display-3", Styles.title)}>
+              {category.name}
+            </h1>
           </Container>
         </Jumbotron>
         <Pagination
@@ -63,30 +66,42 @@ class CategoryProduct extends Component {
           defaultPageSize={16}
         />
         <Container>
-          <Row>
-            { products && products.map(product => {
-              const {product_id, thumbnail, name, price } = product;
-              return (
-                <ProductCard
-                  key={product_id}
-                  product_id={product_id}
-                  thumbnail={thumbnail}
-                  name={name}
-                  price={price}
-                />
-              );
-            })}
-          </Row>
+          {loading ? (
+            <Row className={Styles.row}>
+              <div className="d-flex">
+                <div className="row d-flex justify-content-center">
+                  <Loader size="50px" />
+                </div>
+              </div>
+            </Row>
+          ) : (
+            <Row className={Styles.row}>
+              {products &&
+                products.map(product => {
+                  const { product_id, thumbnail, name, price } = product;
+                  return (
+                    <ProductCard
+                      key={product_id}
+                      product_id={product_id}
+                      thumbnail={thumbnail}
+                      name={name}
+                      price={price}
+                    />
+                  );
+                })}
+            </Row>
+          )}
         </Container>
       </Fragment>
-    )
+    );
   }
 }
 
 const mapStateToProps = state => ({
   products: state.products.data.rows,
   count: state.products.data.count,
-  category: state.category.category
+  category: state.category.category,
+  loading: state.products.isLoading
 })
 
 const mapDispatchToProps = dispatch => ({

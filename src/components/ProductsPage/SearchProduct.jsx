@@ -6,7 +6,9 @@ import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { Jumbotron, Container, Row } from 'react-bootstrap';
 import cx from 'classnames';
+import { Link } from 'react-router-dom';
 import { Pagination } from 'antd';
+import Loader from '../../common/Loader';
 import Styles from './products.module.css';
 import ProductCard from '../../common/productCard/ProductCard';
 import { searchForProduct } from '../../actions/productAction';
@@ -42,44 +44,74 @@ class SearchProduct extends Component {
   }
 
   render() {
-    const { products, count } = this.props;
+    const { products, count, loading } = this.props;
     return (
       <Fragment>
         <Jumbotron fluid className={cx(Styles.head)}>
           <Container>
-            <h1 className={cx("display-3", Styles.title)}>Search Results</h1>
+            <h1 className={cx("display-3", Styles.title)}>
+              Search Results
+            </h1>
           </Container>
         </Jumbotron>
-        <Pagination
-          onChange={this.handlePageChange}
-          defaultCurrent={1}
-          total={count}
-          defaultPageSize={16}
-        />
+        {products && products.length ? (
+          <Pagination
+            onChange={this.handlePageChange}
+            defaultCurrent={1}
+            total={count}
+            defaultPageSize={16}
+          />
+        ) : null}
         <Container>
-          <Row>
-            { products && products.map(product => {
-              const {product_id, thumbnail, name, price } = product;
-              return (
-                <ProductCard
-                  key={product_id}
-                  product_id={product_id}
-                  thumbnail={thumbnail}
-                  name={name}
-                  price={price}
-                />
-              );
-            })}
-          </Row>
+          {loading ? (
+            <Row className={Styles.row}>
+              <div className="d-flex">
+                <div className="row d-flex justify-content-center">
+                  <Loader size="50px" />
+                </div>
+              </div>
+            </Row>
+          ) : (
+            <Row className={Styles.row}>
+              {products && products.length ? (
+                products.map(product => {
+                  const { product_id, thumbnail, name, price } = product;
+                  return (
+                    <ProductCard
+                      key={product_id}
+                      product_id={product_id}
+                      thumbnail={thumbnail}
+                      name={name}
+                      price={price}
+                    />
+                  );
+                })
+              ) : (
+                <div>
+                  <div className={Styles.how}>
+                    Your search is empty, we don&lsquo;t have that item in the store
+                  </div>
+                  <Link
+                    className={Styles.catalog}
+                    to="/catalog"
+                    type="text"
+                  >
+                    Back to Shop
+                  </Link>
+                </div>
+              )}
+            </Row>
+          )}
         </Container>
       </Fragment>
-    )
+    );
   }
 }
 
 const mapStateToProps = state => ({
   products: state.products.data.rows,
-  count: state.products.data.count
+  count: state.products.data.count,
+  loading: state.products.isLoading
 })
 
 const mapDispatchToProps = dispatch => ({

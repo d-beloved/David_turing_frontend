@@ -2,7 +2,6 @@
   font-weight: bold;
   color: white;
   font-size: 30px;
-  padding-left: 60px;
 }
 
 .nav{
@@ -50,7 +49,7 @@
 .auth{
   text-decoration: none;
   color: white;
-  font-size: 10px bold;
+  font-size: 10px bolder;
 }
 .auth:hover{
   color: #F62F5E;
@@ -100,10 +99,64 @@
   color: #F62F5E;
 }
 
-.wrap{
+.wrap {
   width: 30%;
   top: 50%;
   left: 50%;
   margin-left: 10px;
   transform: translate(-50%, -50%);
+}
+
+@media only screen and (max-width: 991px) {
+  /* For mobile phones: */
+  .wrap {
+    width: 50%;
+    margin-bottom: 20px;
+    margin-left: 380px;
+  }
+}
+
+@media only screen and (max-width: 900px) {
+  /* For mobile phones: */
+  .wrap {
+    width: 50%;
+    margin-bottom: 20px;
+    margin-left: 330px;
+  }
+}
+
+@media only screen and (max-width: 800px) {
+  /* For mobile phones: */
+  .wrap {
+    width: 50%;
+    margin-bottom: 20px;
+    margin-left: 280px;
+  }
+}
+
+@media only screen and (max-width: 700px) {
+  /* For mobile phones: */
+  .wrap {
+    width: 50%;
+    margin-bottom: 20px;
+    margin-left: 250px;
+  }
+}
+
+@media only screen and (max-width: 610px) {
+  /* For mobile phones: */
+  .wrap {
+    width: 50%;
+    margin-bottom: 20px;
+    margin-left: 190px;
+  }
+}
+
+@media only screen and (max-width: 470px) {
+  /* For mobile phones: */
+  .wrap {
+    width: 50%;
+    margin-bottom: 20px;
+    margin-left: 120px;
+  }
 }

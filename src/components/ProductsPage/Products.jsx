@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import { Jumbotron, Container, Row } from 'react-bootstrap';
 import cx from 'classnames';
 import { Pagination } from 'antd';
+import Loader from '../../common/Loader';
 import Styles from './products.module.css';
 import ProductCard from '../../common/productCard/ProductCard';
 import { getAllProducts } from '../../actions/productAction';
@@ -30,7 +31,7 @@ class ProductsPage extends Component {
   }
 
   render() {
-    const { products, count } = this.props;
+    const { products, count, loading } = this.props;
     return (
       <Fragment>
         <Jumbotron fluid className={cx(Styles.head)}>
@@ -45,20 +46,31 @@ class ProductsPage extends Component {
           defaultPageSize={16}
         />
         <Container>
-          <Row>
-            { products && products.map(product => {
-              const {product_id, thumbnail, name, price } = product;
-              return (
-                <ProductCard
-                  key={product_id}
-                  product_id={product_id}
-                  thumbnail={thumbnail}
-                  name={name}
-                  price={price}
-                />
-              );
-            })}
-          </Row>
+          {loading ? (
+            <Row className={Styles.row}>
+              <div className="d-flex">
+                <div className="row d-flex justify-content-center">
+                  <Loader size="50px" />
+                </div>
+              </div>
+            </Row>
+          ) : (
+            <Row className={Styles.row}>
+              {products &&
+                products.map(product => {
+                  const { product_id, thumbnail, name, price } = product;
+                  return (
+                    <ProductCard
+                      key={product_id}
+                      product_id={product_id}
+                      thumbnail={thumbnail}
+                      name={name}
+                      price={price}
+                    />
+                  );
+                })}
+            </Row>
+          )}
         </Container>
       </Fragment>
     );
@@ -68,12 +80,14 @@ class ProductsPage extends Component {
 ProductsPage.propTypes = {
   fetchProducts: PropTypes.func,
   products: PropTypes.array,
-  count: PropTypes.number
+  count: PropTypes.number,
+  loading: PropTypes.bool
 }
 
 const mapStateToProps = state => ({
   products: state.products.data.rows,
-  count: state.products.data.count
+  count: state.products.data.count,
+  loading: state.products.isLoading
 })
 
 const mapDispatchToProps = dispatch => ({

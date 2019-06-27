@@ -25,14 +25,16 @@ const nav = {
   fontSize: '17px',
   verticalAlign: 'text-bottom',
   color: 'white',
-  paddingLeft: '20px'
 }
 
 const navBar = {
   fontWeight: 'bold',
   color: '#F62F5E',
   fontSize: '30px',
-  paddingLeft: '60px'
+}
+
+const navbarToggler = {
+  backgroundColor: 'white'
 }
 
 class Header extends  Component {
@@ -72,7 +74,7 @@ class Header extends  Component {
           <Navbar.Brand href="/" style={navBar}>
             SHOPMATE
           </Navbar.Brand>
-          <Navbar.Toggle {...rest} aria-controls="basic-navbar-nav" />
+          <Navbar.Toggle style={navbarToggler} {...rest} aria-controls="basic-navbar-nav" />
           <Navbar.Collapse {...rest} id="basic-navbar-nav">
             <Nav variant="pill" className="mr-auto">
               {department.length > 0 &&

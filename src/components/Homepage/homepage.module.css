@@ -1,5 +1,5 @@
 .head {
-  background-image: url("https://res.cloudinary.com/dbeloved/image/upload/v1560354138/images/S2E_YRe.jpg.jpg");
+  background-image: url("https://res.cloudinary.com/dbeloved/image/upload/v1561660967/images/charisse-kenion-69epvVgm0Ws-unsplash.jpg");
   background-size: cover;
   background-repeat: no-repeat;
   min-height: 400px;
@@ -14,6 +14,14 @@
 
 .subtitle {
   font-size: 20px
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  margin-right: -15px;
+  margin-left: -15px;
+  justify-content: center;
 }
 
 .topText {

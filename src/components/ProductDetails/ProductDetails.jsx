@@ -241,7 +241,7 @@ class ProductDetails extends Component {
         </div>
         <Container>
           <div className={Styles.others}>You may also like</div>
-          <Row>
+          <Row className={Styles.row}>
             { products && products.map(product => {
               const {product_id, thumbnail, name, price } = product;
               return (

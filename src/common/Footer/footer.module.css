@@ -1,8 +1,9 @@
 .footer{
+  display: flex;
   background-color: black;
   color: white;
-  height:200px;
   padding: 5rem;
+  flex: wrap;
   text-align: center;
 }
 

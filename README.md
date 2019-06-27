@@ -44,4 +44,4 @@ cd path/to/David-Turing-Store
 ```
 
 * Run `npm install` or `yarn` to instal the project's dependencies
-* Open a new terminal window and run `npm run start:dev` to start the application
+* Open a new terminal window and run `npm run dev` or `yarn dev` to start the application

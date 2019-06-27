@@ -21,8 +21,15 @@ function Cart(props) {
   const { cartId } = cookieParse.parse(document.cookie);
 
   if(!cart.length) {
-    return(
-      <div>Your Cart is Empty, pls visit the store to get your favorite items</div>
+    return (
+      <div className={Styles.notFound}>
+        <div className={Styles.how}>
+          Your Cart is Empty, pls visit the store to get your favorite items
+        </div>
+        <Link className={Styles.catalog} to="/catalog" type="text">
+          Back to Shop
+        </Link>
+      </div>
     );
   }
 

@@ -7,6 +7,7 @@ import PropTypes from 'prop-types';
 import { Jumbotron, Container, Row } from 'react-bootstrap';
 import cx from 'classnames';
 import { Pagination } from 'antd';
+import Loader from '../../common/Loader';
 import Styles from './products.module.css';
 import ProductCard from '../../common/productCard/ProductCard';
 import { getProductIndepartment } from '../../actions/productAction';
@@ -50,12 +51,14 @@ class DepartmentProduct extends Component {
   }
 
   render() {
-    const { products, count, departments } = this.props;
+    const { products, count, departments, loading } = this.props;
     return (
       <Fragment>
         <Jumbotron fluid className={cx(Styles.head)}>
           <Container>
-            <h1 className={cx("display-3", Styles.title)}>{departments.name}</h1>
+            <h1 className={cx("display-3", Styles.title)}>
+              {departments.name}
+            </h1>
           </Container>
         </Jumbotron>
         <Pagination
@@ -65,23 +68,34 @@ class DepartmentProduct extends Component {
           defaultPageSize={16}
         />
         <Container>
-          <Row>
-            { products && products.map(product => {
-              const {product_id, thumbnail, name, price } = product;
-              return (
-                <ProductCard
-                  key={product_id}
-                  product_id={product_id}
-                  thumbnail={thumbnail}
-                  name={name}
-                  price={price}
-                />
-              );
-            })}
-          </Row>
+          {loading ? (
+            <Row className={Styles.row}>
+              <div className="d-flex">
+                <div className="row d-flex justify-content-center">
+                  <Loader size="50px" />
+                </div>
+              </div>
+            </Row>
+          ) : (
+            <Row className={Styles.row}>
+              {products &&
+                products.map(product => {
+                  const { product_id, thumbnail, name, price } = product;
+                  return (
+                    <ProductCard
+                      key={product_id}
+                      product_id={product_id}
+                      thumbnail={thumbnail}
+                      name={name}
+                      price={price}
+                    />
+                  );
+                })}
+            </Row>
+          )}
         </Container>
       </Fragment>
-    )
+    );
   }
 }
 
@@ -96,12 +110,14 @@ DepartmentProduct.propTypes = {
       department_id: PropTypes.string
     })
   }),
+  loading: PropTypes.bool
 }
 
 const mapStateToProps = state => ({
   products: state.products.data.rows,
   count: state.products.data.count,
-  departments: state.department.department
+  departments: state.department.department,
+  loading: state.products.isLoading
 })
 
 const mapDispatchToProps = dispatch => ({
