@@ -18,7 +18,7 @@
     "eslint-plugin-react": "^7.14.2",
     "jwt-decode": "^2.2.0",
     "lodash": "^4.17.11",
-    "node-sass": "^4.12.0",
+    "node-sass": "^7.0.0",
     "prop-types": "^15.7.2",
     "react": "^16.8.6",
     "react-app-rewired": "^2.1.3",
